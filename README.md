@@ -6,7 +6,7 @@ This ontology aims to provide a structured and standardized way to describe enti
 
 # Content
 The repository contains:
-- the [specification](docs/index.html) of the ontology (a webpage is available [here](http://https://homey-prin22.github.io/semioe/index.html))
+- the [specification](docs/index.html) of the ontology (a webpage is available [here](https://homey-prin22.github.io/semioe/index.html))
 - the [serialization](rdf/semioe.ttl) of the ontology in Turtle (.ttl)
 
 # License

@@ -176,12 +176,12 @@ ioe:endTime rdf:type owl:DatatypeProperty ;
             rdfs:label "endTime" .
 
 
-###  http://w3id.org/semioe#isTransferrable
-ioe:isTransferrable rdf:type owl:DatatypeProperty ;
+###  http://w3id.org/semioe#isTransferable
+ioe:isTransferable rdf:type owl:DatatypeProperty ;
                     rdfs:domain ioe:CurrentRole ;
                     rdfs:range xsd:boolean ;
-                    rdfs:comment "Specifies whether an ioe:CurrentRole can be transferred from an ioe:Agent to another" ;
-                    rdfs:label "isTransferrable" .
+                    rdfs:comment "Specifies whether an ioe:CurrentRole can be transfered from an ioe:Agent to another" ;
+                    rdfs:label "isTransferable" .
 
 
 ###  http://w3id.org/semioe#startTime

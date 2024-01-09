@@ -13,4 +13,4 @@ The repository contains the following folders:
 This ontology is licensed under the Creative Commons Attribution 4.0 International License. For details, see the [LICENSE](LICENSE) file.
 
 # Funding
-The development of SemIoE has been funded by the Italian Ministry of University and Research through the PRIN Project ``HOMEY: a Human-centric IOE-based framework for supporting the transition towards industry 5.0'' (code 2022NX7WKE) ([link](https://homey-prin22.unipv.it/)).
+The development of SemIoE has been funded by the Italian Ministry of University and Research through the PRIN Project ``[HOMEY](https://homey-prin22.unipv.it/): a Human-centric IOE-based framework for supporting the transition towards industry 5.0'' (code 2022NX7WKE).

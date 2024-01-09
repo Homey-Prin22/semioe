@@ -1,2505 +1,1232 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>SemIoE</title>
-    <style>
-        #pylode {
-            position: fixed;
-            top: 205px;
-            left: -150px;
-            font-size: small;
-            transform: rotate(-90deg);
-            color: grey;
-        }
-        #pylode a {
-            font-size: 1.5em;
-            font-weight: bold;
-            text-decoration: none;
-            color: #005A9C;
-        }
-        #pylode a:hover {
-            color: #333;
-        }
-        #pylode #p {
-            color: #329545;
-        }
-        #pylode #y {
-            color: #f9cb33;
-        }
-        #pylode #version {
-            font-size: 1.0em;
-        }
-
-        #profile {
-            font-style: italic;
-            font-size: 1.25em;
-            color: darkred!important;
-        }
-
-        .cardinality {
-            font-style: italic;
-            color: #aa00aa;
-        }
-
-        dl {
-            /*border: 1px solid navy;*/
-            /*padding:5px;*/
-        }
-
-        dt {
-            font-weight: bold;
-            padding: 0;
-        }
-
-        dd {
-            margin-bottom: 10px;
-            padding-top: 7px;
-        }
-
-        #metadata ul,
-        #classes ul {
-            list-style-type: none;
-        }
-
-        #metadata ul li,
-        #classes ul li {
-            margin-left: -40px;
-        }
-
-        ul.hlist {
-            list-style-type: none;
-            border: 1px solid navy;
-            padding:5px;
-            background-color: #F4FFFF;
-        }
-
-        ul.hierarchy {
-            border: 1px solid navy;
-            padding: 5px 25px 5px 25px;
-            background-color: #F4FFFF;
-        }
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+ <link rel="stylesheet" href="resources/primer.css" media="screen" />    <link rel="stylesheet" href="resources/rec.css" media="screen" />    <link rel="stylesheet" href="resources/extra.css" media="screen" />    <link rel="stylesheet" href="resources/owl.css" media="screen" />    <title>SemIoE Ontology</title>
 
 
-        ul.hlist li {
-            display: inline;
-            margin-right: 10px;
-        }
+<!-- SCHEMA.ORG METADATA -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","url":"https://w3id.org/semioe#","image":"http://vowl.visualdataweb.org/webvowl/#iri=https://w3id.org/semioe#","name":"SemIoE", "headline":"Document describing the ontology https://w3id.org/semioe#", "dateReleased":"09/01/2024", "version":"0.9", "license":"https://creativecommons.org/licenses/by/4.0", "author":[{"@type":"Person","name":"Emanuele Storti","url":"https://orcid.org/0000-0001-5966-6921"},{"@type":"Person","name":"Antonino Nocera","url":"https://orcid.org/0000-0003-2120-2341"},{"@type":"Person","name":"Marco Arazzi","url":"https://orcid.org/0000-0002-3371-307X"}]}</script>
 
-        .entity {
-            border: 1px solid navy;
-            margin:5px 0 5px 0;
-            padding: 5px;
-        }
-
-        .entity th {
-            width: 150px;
-            vertical-align: top;
-        }
-
-        .entity th,
-        .entity td {
-            padding-bottom: 20px;
-        }
-
-        .entity table th {
-            text-align: left;
-        }
-
-        section#overview img {
-            max-width: 1000px;
-        }
-
-        h1, h2, h3, h4, h5, h6 {
-            text-align: left
-        }
-        h1, h2, h3 {
-            color: #005A9C; background: white
-        }
-        h1 {
-            font: 170% sans-serif;
-            line-height: 110%;
-        }
-        h2 {
-            font: 140% sans-serif;
-            margin-top:40px;
-        }
-        h3 {
-            font: 120% sans-serif;
-            margin-top: 20px;
-            padding-bottom: 5px;
-            border-bottom: 1px solid navy;
-        }
-        h4 { font: bold 100% sans-serif }
-        h5 { font: italic 100% sans-serif }
-        h6 { font: small-caps 100% sans-serif }
-
-        body {
-            padding: 2em 70px 2em 70px;
-            margin: 0;
-            font-family: sans-serif;
-            color: black;
-            background: white;
-            background-position: top left;
-            background-attachment: fixed;
-            background-repeat: no-repeat;
-            text-align: left;
-        }
-
-        section {
-            max-width: 1500px;
-        }
-
-        .figure {
-            margin-bottom: 20px;
-        }
-
-        :link { color: #00C; background: transparent }
-        :visited { color: #609; background: transparent }
-        a:active { color: #C00; background: transparent }
-
-        .sup-c,
-        .sup-op,
-        .sup-fp,
-        .sup-dp,
-        .sup-ap,
-        .sup-p,
-        .sup-ni,
-        .sup-con,
-        .sup-col {
-            cursor:help;
-        }
-
-        .sup-c {
-            color:orange;
-        }
-
-        .sup-op {
-            color:navy;
-        }
-
-        .sup-fp {
-            color:lightskyblue;
-        }
-
-        .sup-dp {
-            color:green;
-        }
-
-        .sup-ap {
-            color:darkred;
-        }
-
-        .sup-p {
-            color:black;
-        }
-
-        .sup-ni {
-            color:brown;
-        }
-
-        .sup-con {
-            color:orange;
-        }
-
-        .sup-col {
-            color:darkred;
-        }
-
-        sup {
-            margin-left: -3px;
-        }
-        code {
-            font-size: large;
-            color: darkred;
-        }
-
-        /* less prominent links for properties */
-        .proplink {
-            color: #336;
-            text-decoration: none;
-        }
-
-#toc {
-    position: fixed;
-    top: 0;
-    right: 0;
-    z-index: 2;
-    height: 100%;
-    overflow-y: auto;
-    padding: 10px;
-    border: solid 1px navy;
-    font-size: small;
-    width: 180px;
+<script src="resources/jquery.js"></script> 
+<script src="resources/marked.min.js"></script> 
+    <script> 
+function loadHash() {
+  jQuery(".markdown").each(function(el){jQuery(this).after(marked(jQuery(this).text())).remove()});
+	var hash = location.hash;
+	if($(hash).offset()!=null){
+	  $('html, body').animate({scrollTop: $(hash).offset().top}, 0);
 }
-#toc h3 {
-    margin-top: 5px;
+	loadTOC();
 }
+function loadTOC(){
+	//process toc dynamically
+	  var t='<h2>Table of contents</h2><ul>';i = 1;j=0;
+	  jQuery(".list").each(function(){
+		if(jQuery(this).is('h2')){
+			if(j>0){
+				t+='</ul>';
+				j=0;
+			}
+			t+= '<li>'+i+'. <a href=#'+ jQuery(this).attr('id')+'>'+ jQuery(this).ignore("span").text()+'</a></li>';
+			i++;
+		}
+		if(jQuery(this).is('h3')){
+			if(j==0){
+				t+='<ul>';
+			}
+			j++;
+			t+= '<li>'+(i-1)+'.'+j+'. '+'<a href=#'+ jQuery(this).attr('id')+'>'+ jQuery(this).ignore("span").text()+'</a></li>';
+		}
+	  });
+	  t+='</ul>';
+	  $("#toc").html(t); 
+}
+$(function(){
+    //loadHash();
+    loadTOC();
+}); $.fn.ignore = function(sel){
+        return this.clone().find(sel||">*").remove().end();
+ }; 
+   </script> 
+  </head> 
 
-#toc ul {
-    list-style: none;
-    padding-left: 0;
-}
+<body>
+<div class="container">
+<div class="head">
+<div style="float:right">language <a href="index-en.html"><b>en</b></a> </div>
+<img src="resources/logo_Homey.png" style="width:8%; min-width:120px;">
+<h1>SemIoE Ontology</h1>
+<h2>09/01/2024</h2>
 
-#toc .first > li {
-    margin-top: 5px;
-}
 
-#toc .second,
-#toc .third {
-    padding-left: 10px;
-}
+<dl>
+<dt>Latest version:</dt>
+<dd><a href="https://w3id.org/semioe#">https://w3id.org/semioe</a></dd>
+<dt>Revision:</dt>
+<dd>0.9</dd>
+<dt>Authors:</dt>
+<dd><a href="https://orcid.org/0000-0001-5966-6921">Emanuele Storti</a>, Polytechnic University of Marche</dd><dd><a href="https://orcid.org/0000-0003-2120-2341">Antonino Nocera</a>, University of Pavia</dd><dd><a href="https://orcid.org/0000-0002-3371-307X">Marco Arazzi</a>, University of Pavia</dd>
 
-#content {
-    width: calc(100% - 150px);
-}
+<dt>Download serialization:</dt><dd><span><a href="https://github.com/Homey-Prin22/semioe/blob/main/rdf/semioe.xml" target="_blank"><img src="https://img.shields.io/badge/Format-RDF/XML-blue.svg" alt="RDF/XML" /></a> </span><span><a href="https://raw.githubusercontent.com/Homey-Prin22/semioe/main/rdf/semioe.ttl" target="_blank"><img src="https://img.shields.io/badge/Format-TTL-blue.svg" alt="TTL" /></a> </span></dd>
+<dt>License:</dt><dd><a href="https://creativecommons.org/licenses/by/4.0" target="_blank"><img src="https://img.shields.io/badge/License-https://creativecommons.org/licenses/by/4.0-blue.svg" alt="https://creativecommons.org/licenses/by/4.0" /></a>
+</dd><!-- <dt>Evaluation:</dt><dd><a href="OOPSevaluation/oopsEval.html#" target="_blank"><img src="https://img.shields.io/badge/Evaluate_with-OOPS! (OntOlogy Pitfall Scanner!)-blue.svg" alt="Evaluate with OOPS!" /></a></dd> -->
+<!--<dt>Cite as:</dt>
+<dd>Citation to the Arxiv version</dd> -->
+<dt>Github repository:</dt><dd><a href="https://github.com/Homey-Prin22/semioe">https://github.com/Homey-Prin22/semioe</a></dd>
+<dt>Project website:</dt><dd><a href="https://homey-prin22.unipv.it">https://homey-prin22.unipv.it</a></dd>
+</dl>
 
-.hover_property {
-    cursor: help;
-    text-decoration: none;
-    border-bottom: dashed 1px;
-}
+<hr/>
+</div>
+<div class="status">
+<div>
+<span>SemIoE Ontology Specification Draft</span>
+</div>
+</div>     <div id="abstract"><h2>Abstract</h2><span class="markdown">
+SemIoE is an OWL2 ontology designed to represent agents, smart devices, and various information entities within the Internet of Everything (IoE) ecosystem. This ontology aims to provide a structured and standardized way to describe entities and their relationships, fostering interoperability and enhancing the semantic understanding of IoE environments.
+</span>
+</div>
+<div id="toc"></div> 
 
-.setclass {
-    list-style-type: none;
-}
+<!--INTRODUCTION SECTION-->
+    <div id="introduction"><h2 id="intro" class="list">Introduction <span class="backlink"> back to <a href="#toc">ToC</a></span></h2>
+<span class="markdown">
+Recently, the Industry 5.0 is gaining attention as a novel paradigm, defining the next concrete steps toward more and more intelligent, green-aware and user-centric digital systems.
+In an era in which smart devices typically adopted in the industry domain are more and more sophisticated and autonomous, the Internet of Things and its evolution known as the Internet of Everything (IoE, for short), involving also people, robots, processes and data in the network, represent the main driver to allow industries to put the experiences and needs of human beings at the center of their ecosystems.
+However, due to the extreme heterogeneity of the involved entities, their intrinsic need and capability to cooperate, and the objective to decline a dynamic user-centric context, the integration and processing of the data produced by such an IoE require special attention.
 
-code{
-    word-wrap: break-word;
-  }
-table {
-    table-layout: fixed;
-    width: 100%;
-}
-td {
-    word-wrap: break-word;
-}
-#legend table.entity {
-    width: 25%;
-}
-	</style>
-    <link href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABhklEQVQ4jbWPzStEURjG3yQLirlGKUnKFO45Z+SjmXvnnmthQcpCoVhYmD/AwmJiI3OvZuZc2U3UlKU0/gAslMw9JgvhHxAr2fko7r0jHSsl+TgbTz2Lt5731/MASEiJW9ONml2QyX6rsGalmnT74v8BDf12hxJfpV8d1uwNKUBYszabdFv84L8B9X0rESVmmUup2fme0cVhJWaZHw4NWL1SewEAfDe6H3Dy6Ll456WEJsRZS630MwCAOI20ei5OBpxse5zcBZw8eS4uPpfIuDiCainIg9umBCU0GZzgLZ9Hn31OgoATL+CkLDGB5H1OKj4nFd/FBxUXJ0UZNb4edw/6nLyJXaj5FeCVyPLNIVmYK8TG1IwWb16L1gEACAFV90ftoT8bdOX0EeyY99gxBXZMgRz6qGb1KantAACI0UvE6F5XJqEjpsdURouI0Vt5gGOUkUNnPu7ObGIIMfNaGqDmjDRi9FZldF1lRgYzeqUyeoiY4ag5Iy3RgOYRM8+/M2bG8efsO4hGrpmJseyMAAAAAElFTkSuQmCC" rel="icon" sizes="16x16" type="image/png">
-    <link href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAC40lEQVRYhe2UT0hUQRzHp6Iss1B3VZKIDbbdfW9mnoi4f3zzjkJQeOgS0SEIb1EWBGGlLLu460zQPQM1unUIIjA6rfpm6ZAhHjoIRVQUFUlEbG+euTsdXG1d3VL3bVD4g+9h+L35fT/8fvN7ADgY9aHY5fpIvK82HO9ysu66wxWOzbkjcekKx0a2ALYA/n2AGi3a6ArFezcidziecQygNhhrcUficjP6PwBqtGijKxy/thnVBePHywYoDsFhl53GV8SEcsTx4usCMLUewTVpc23BNvEzm6Neyf1+KcG2vwqwUjgrOJq2JmHftwmkVBRGTvncFodnbI7vChO/FRznCmHsNM7aHM9Yk7Df5iqsLMw9sMNOK2g+jS4IEz0UJv4iuJZb2RltWnB4UZqH6ioGAgAAGe5vtiZhtzDx7OoRadLmeM7m6IRjhnLMW2Vx1bA5GhAmnhIcz6/xNj4Ujsky8UspwfayjDPjsF2Y6L7N8Vzx/BfP+KPg6LbgSqd8DnfJW2CnbaLhfH5ephpqygJYvQU4Z3P82TLRsDDhUTnmrSq+Y3N0Mg+Xldy/zwEAnLMWZ3pHpNExmfLs/t0dOdVcbT0JeKxUwFP2VljjqiE47Jp53LTXNxhsUZjerTByXWX6VZWRs/4bIQ2ACv+UAomgDzLCISNZxAxZKMhIDjLy1JfsaK+I+eGBUBNk5E2x8RogX/PdcDZUqieWTSh5D6nOVKqfhoycUmlHFFIyu5RXqf7AcQDISCpv/tqbMBqK883RtmpISRoxQyJKPgGn3wNk5NEigDFa6hslqV/Kj+FdBQD0bshIDlKSLlVcoWQo36UhR80BAMB73lulMn0EMpJTqD6qJiOt3mho/8GbkT2BZNgDB/V+RI0fkOrT3kRIVQbaDizJm2hdNbINBxwk5xAj3yEjuV9rZ1iIkgxixkLBA83mz8uCjLwoGwAx0vOnFSy5mtR4VTaAQvVORMnwZgSpzkrV/QmdE2tKe46+MQAAAABJRU5ErkJggg==" rel="icon" sizes="32x32" type="image/png">
-    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-    <script id="schema.org" type="application/ld+json">
-[
-  {
-    "@id": "http://w3id.org/semioe#",
-    "@type": [
-      "https://schema.org/DefinedTermSet"
-    ],
-    "https://schema.org/creator": [
-      {
-        "@id": "_:nec5dfb46030d4d098fd8fb1f74b54b38b1"
-      },
-      {
-        "@id": "_:nec5dfb46030d4d098fd8fb1f74b54b38b2"
-      },
-      {
-        "@id": "_:nec5dfb46030d4d098fd8fb1f74b54b38b3"
-      }
-    ],
-    "https://schema.org/description": [
-      {
-        "@value": "The SemIoE ontology is aimed to represent resources and their relations in a Internet-of-Everything network."
-      }
-    ],
-    "https://schema.org/license": [
-      {
-        "@id": "https://creativecommons.org/licenses/by/4.0"
-      }
-    ],
-    "https://schema.org/name": [
-      {
-        "@value": "SemIoE"
-      }
-    ]
-  },
-  {
-    "@id": "_:nec5dfb46030d4d098fd8fb1f74b54b38b1",
-    "https://schema.org/name": [
-      {
-        "@value": "Emanuele Storti"
-      }
-    ]
-  },
-  {
-    "@id": "_:nec5dfb46030d4d098fd8fb1f74b54b38b2",
-    "https://schema.org/name": [
-      {
-        "@value": "Antonino Nocera"
-      }
-    ]
-  },
-  {
-    "@id": "_:nec5dfb46030d4d098fd8fb1f74b54b38b3",
-    "https://schema.org/name": [
-      {
-        "@value": "Marco Arazzi"
-      }
-    ]
-  }
-]
-	</script>
-  </head>
-  <body>
-    <div id="content">
-      <div class="section" id="metadata">
-        <h1>SemIoE</h1>
-        <h2>Metadata</h2>
-        <dl>
-          <div>
-            <dt>
-              <strong>IRI</strong>
-            </dt>
+This is the objective of the SemIoE ontology, a novel semantic model that formalizes the fundamental agents, elements and information of an IoE, along with their relationships. 
+In particular, relevant information that is represented in the ontology is categorized under several perspectives:
+<ul>
+<li>the <i>smart objects</i> perspective focuses on smart devices including one or more systems. In turn, each of it can be composed of a number of other devices such as sensors and actuators. Their technical capabilities, operating ranges, configurations and locations are described;</li>
+<li> the <i<>environment</i> perspective, which focuses on the enterprise environment and its structure in sub-components, e.g. buildings, floors, rooms;</li>
+<li> the <i>organization</i> perspective, which includes the organizational structure in terms of sub-organizations and units, and the reporting structure for the employees, where they are located and what roles are defined for them;</li>
+<li> the <i>process</i> perspective, which details processes in terms of activities in which employees are engaged.</li>
+</ul>
+
+Furthermore, two relevant perspectives can be identified that are orthogonal to the mentioned ones, namely:
+<ul>
+<li> <i>preferences</i> of employees related to environmental or smart devices' parameters;</li>
+<li> <i>access control</i>, which focuses on what rights are associated with each organization role. Rights can be defined of three types with decreasing granularity: on environment, which apply on all systems located in the same place, on smart objects, which apply to all its sub-systems, and on specific systems. Furthermore, rights can be transferred among employees or smart objects (hereby we refer to the term ``agent'' to consider both) in the execution of an activity/process, through different types of relations, namely delegation or collaboration. In the former case, the existing rights of the delegated agent for the delegated activity are replaced with those of the delegating agent. Delegation can happen only if the delegated agent is not involved in another activity. On the other hand, in the latter case, the rights already owned by the agent are combined with those of the collaborating one.</li>
+</ul>
+
+In our design, we focus on state-of-the-art design principles, in particular reuse, and abstraction, to build a lightweight ontology inheriting and extending concepts from well-known and consolidated reference ontologies.
+Following widely adopted best practices on reusing ontological models, indeed the development of the SemIOE ontology starts from the identification of relevant existing vocabularies/ontologies focusing on specific aspects of the IoE:
+<ul>    <li>Semantic Sensor Network (SSN)<a href="#bib-SSN">[SSN]</a></cite> and Sensor, Observation, Sample, and Actuator (SOSA) <a href="#bib-SOSA">[SOSA]</a> ontologies for the representation of sensors, actuators and related platforms</li>
+   <li> Building Topology Ontology <a href="#bib-BOT">[BOT]</a> for the representation of environments</li>
+   <li> Org ontology <a href="#bib-ORG">[ORG]</a> for the representation of organization units, their roles and structure.</li>
+</ul>
+
+These ontological modules have been integrated through a bridge ontology which is graphically represented in Figure 1. On the one hand, it allows to define the needed connections and alignments between relevant classes of different ontologies for the realization of a comprehensive model of the IoE environment.
+On the other hand, the bridge ontology defines further classes and properties to represent concepts that are relevant for the IoE environment and are not available in external ontologies.</span><br><br>
+<center><div><img src="resources/semioe.png" align="center" style="text-align:center; width:50%; height: auto;"></div>
+<figcaption>Figure <span class="figno">1</span> <span class="fig-title">The SemIoE ontology.</span></figcaption></center>
+
+<div id="namespacedeclarations">
+<h3 id="ns" class="list">Namespace declarations</h3>
+<div id="ns" align="center">
+<span>The namespace for SemIoE terms is <a href="http://www.w3id.org/semioe">http://www.w3id.org/semioe#</a>.</span><br><br>
+<span>The suggested prefix for the SemIoE namespace is <span style="font-family: courier;">ioe</span>.</span><br><br>
+<table>
+<caption> <a href="#ns"> Table 1</a>: Namespaces used in the document </caption>
+<tbody>
+<tr><td><b>bot</b></td><td>&lt;https://w3id.org/bot#&gt;</td></tr>
+<tr><td><b>dc</b></td><td>&lt;http://purl.org/dc/elements/1.1/&gt;</td></tr>
+<tr><td><b>dcterms</b></td><td>&lt;http://purl.org/dc/terms/&gt;</td></tr>
+<tr><td><b>foaf</b></td><td>&lt;http://xmlns.com/foaf/0.1/&gt;</td></tr>
+<tr><td><b>ioe</b></td><td>&lt;http://w3id.org/semioe#&gt;</td></tr>
+<tr><td><b>org</b></td><td>&lt;http://www.w3.org/ns/org#&gt;</td></tr>
+<tr><td><b>owl</b></td><td>&lt;http://www.w3.org/2002/07/owl#&gt;</td></tr>
+<tr><td><b>rdf</b></td><td>&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;</td></tr>
+<tr><td><b>rdfs</b></td><td>&lt;http://www.w3.org/2000/01/rdf-schema#&gt;</td></tr>
+<tr><td><b>ssn</b></td><td>&lt;http://www.w3.org/ns/ssn/&gt;</td></tr>
+<tr><td><b>vann</b></td><td>&lt;http://purl.org/vocab/vann/&gt;</td></tr>
+<tr><td><b>xml</b></td><td>&lt;http://www.w3.org/XML/1998/namespace&gt;</td></tr>
+<tr><td><b>xsd</b></td><td>&lt;http://www.w3.org/2001/XMLSchema#&gt;</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+  
+
+<!--OVERVIEW SECTION-->
+    <div id="overview"><h2 id="overv" class="list">Overview of classes and properties<span class="backlink"> back to <a href="#toc">ToC</a></span></h2>
+<span class="markdown">
+This ontology has the following classes and properties.</span>
+<h4>Classes</h4>
+<ul xmlns:widoco="https://w3id.org/widoco/vocab#"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    class="hlist">
+   <li>
+      <a href="#http://w3id.org/semioe#Activity" title="http://w3id.org/semioe#Activity">Activity</a>
+   </li>
+   <li>
+      <a href="#http://w3id.org/semioe#Agent" title="http://w3id.org/semioe#Agent">Agent</a>
+   </li>
+   <li>
+      <a href="#http://w3id.org/semioe#AgentRelation" title="http://w3id.org/semioe#AgentRelation">AgentRelation</a>
+   </li>
+   <li>
+      <a href="#http://w3id.org/semioe#Collaboration" title="http://w3id.org/semioe#Collaboration">Collaboration</a>
+   </li>
+   <li>
+      <a href="#http://w3id.org/semioe#CurrentRole" title="http://w3id.org/semioe#CurrentRole">CurrentRole</a>
+   </li>
+   <li>
+      <a href="#http://w3id.org/semioe#Delegation" title="http://w3id.org/semioe#Delegation">Delegation</a>
+   </li>
+   <li>
+      <a href="#http://w3id.org/semioe#HAgent" title="http://w3id.org/semioe#HAgent">HAgent</a>
+   </li>
+   <li>
+      <a href="#http://w3id.org/semioe#Process" title="http://w3id.org/semioe#Process">Process</a>
+   </li>
+   <li>
+      <a href="#http://w3id.org/semioe#Right" title="http://w3id.org/semioe#Right">Right</a>
+   </li>
+   <li>
+      <a href="#http://w3id.org/semioe#RightOnEnvironment" title="http://w3id.org/semioe#RightOnEnvironment">RightOnEnvironment</a>
+   </li>
+   <li>
+      <a href="#http://w3id.org/semioe#RightOnSmartObject" title="http://w3id.org/semioe#RightOnSmartObject">RightOnSmartObject</a>
+   </li>
+   <li>
+      <a href="#http://w3id.org/semioe#RightOnSystem" title="http://w3id.org/semioe#RightOnSystem">RightOnSystem</a>
+   </li>
+   <li>
+      <a href="#http://w3id.org/semioe#RightType" title="http://w3id.org/semioe#RightType">RightType</a>
+   </li>
+   <li>
+      <a href="#http://w3id.org/semioe#Site" title="http://w3id.org/semioe#Site">Site</a>
+   </li>
+   <li>
+      <a href="#http://w3id.org/semioe#SmartObject" title="http://w3id.org/semioe#SmartObject">SmartObject</a>
+   </li>
+   <li>
+      <a href="#http://w3id.org/semioe#System" title="http://w3id.org/semioe#System">System</a>
+   </li>
+   <li>
+      <a href="#http://w3id.org/semioe#WorkflowElement" title="http://w3id.org/semioe#WorkflowElement">WorkflowElement</a>
+   </li>
+</ul><h4>Object Properties</h4><ul xmlns:widoco="https://w3id.org/widoco/vocab#"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    class="hlist">
+   <li>
+      <a href="#http://w3id.org/semioe#engagedIn" title="http://w3id.org/semioe#engagedIn">engagedIn</a>
+   </li>
+   <li>
+      <a href="#http://w3id.org/semioe#forRole" title="http://w3id.org/semioe#forRole">
+         <span>for role</span>
+      </a>
+   </li>
+   <li>
+      <a href="#http://w3id.org/semioe#forWorkflowElement" title="http://w3id.org/semioe#forWorkflowElement">forWorkflowElement</a>
+   </li>
+   <li>
+      <a href="#http://w3id.org/semioe#fromAgent" title="http://w3id.org/semioe#fromAgent">fromAgent</a>
+   </li>
+   <li>
+      <a href="#http://w3id.org/semioe#hasType" title="http://w3id.org/semioe#hasType">hasType</a>
+   </li>
+   <li>
+      <a href="#http://w3id.org/semioe#includedIn" title="http://w3id.org/semioe#includedIn">includedIn</a>
+   </li>
+   <li>
+      <a href="#http://w3id.org/semioe#inProcess" title="http://w3id.org/semioe#inProcess">inProcess</a>
+   </li>
+   <li>
+      <a href="#http://w3id.org/semioe#locatedIn" title="http://w3id.org/semioe#locatedIn">locatedIn</a>
+   </li>
+   <li>
+      <a href="#http://w3id.org/semioe#onEnvironment" title="http://w3id.org/semioe#onEnvironment">onEnvironment</a>
+   </li>
+   <li>
+      <a href="#http://w3id.org/semioe#onSmartObject" title="http://w3id.org/semioe#onSmartObject">onSmartObject</a>
+   </li>
+   <li>
+      <a href="#http://w3id.org/semioe#onSystem" title="http://w3id.org/semioe#onSystem">onSystem</a>
+   </li>
+   <li>
+      <a href="#http://w3id.org/semioe#toAgent" title="http://w3id.org/semioe#toAgent">toAgent</a>
+   </li>
+</ul><h4>Data Properties</h4><ul xmlns:widoco="https://w3id.org/widoco/vocab#"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    class="hlist">
+   <li>
+      <a href="#http://w3id.org/semioe#endTime" title="http://w3id.org/semioe#endTime">endTime</a>
+   </li>
+   <li>
+      <a href="#http://w3id.org/semioe#isTransferrable" title="http://w3id.org/semioe#isTransferrable">isTransferable</a>
+   </li>
+   <li>
+      <a href="#http://w3id.org/semioe#startTime" title="http://w3id.org/semioe#startTime">startTime</a>
+   </li>
+</ul>
+</ul>
+</div>
+  
+
+<!--CROSSREF SECTION-->
+   <div id="crossref"><h2 id="crossreference" class="list">Specification <span class="backlink"> back to <a href="#toc">ToC</a></span></h2>
+This section provides details for each class and property defined by SemIoE.
+<div xmlns:widoco="https://w3id.org/widoco/vocab#"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     id="classes">
+   <h3 id="classes-headline" class="list">Classes</h3>
+   <ul class="hlist">
+      <li>
+         <a href="#http://w3id.org/semioe#Activity" title="http://w3id.org/semioe#Activity">Activity</a>
+      </li>
+      <li>
+         <a href="#http://w3id.org/semioe#Agent" title="http://w3id.org/semioe#Agent">Agent</a>
+      </li>
+      <li>
+         <a href="#http://w3id.org/semioe#AgentRelation" title="http://w3id.org/semioe#AgentRelation">AgentRelation</a>
+      </li>
+      <li>
+         <a href="#http://w3id.org/semioe#Collaboration" title="http://w3id.org/semioe#Collaboration">Collaboration</a>
+      </li>
+      <li>
+         <a href="#http://w3id.org/semioe#CurrentRole" title="http://w3id.org/semioe#CurrentRole">CurrentRole</a>
+      </li>
+      <li>
+         <a href="#http://w3id.org/semioe#Delegation" title="http://w3id.org/semioe#Delegation">Delegation</a>
+      </li>
+      <li>
+         <a href="#http://w3id.org/semioe#HAgent" title="http://w3id.org/semioe#HAgent">HAgent</a>
+      </li>
+      <li>
+         <a href="#http://w3id.org/semioe#Process" title="http://w3id.org/semioe#Process">Process</a>
+      </li>
+      <li>
+         <a href="#http://w3id.org/semioe#Right" title="http://w3id.org/semioe#Right">Right</a>
+      </li>
+      <li>
+         <a href="#http://w3id.org/semioe#RightOnEnvironment" title="http://w3id.org/semioe#RightOnEnvironment">RightOnEnvironment</a>
+      </li>
+      <li>
+         <a href="#http://w3id.org/semioe#RightOnSmartObject" title="http://w3id.org/semioe#RightOnSmartObject">RightOnSmartObject</a>
+      </li>
+      <li>
+         <a href="#http://w3id.org/semioe#RightOnSystem" title="http://w3id.org/semioe#RightOnSystem">RightOnSystem</a>
+      </li>
+      <li>
+         <a href="#http://w3id.org/semioe#RightType" title="http://w3id.org/semioe#RightType">RightType</a>
+      </li>
+      <li>
+         <a href="#http://w3id.org/semioe#Site" title="http://w3id.org/semioe#Site">Site</a>
+      </li>
+      <li>
+         <a href="#http://w3id.org/semioe#SmartObject" title="http://w3id.org/semioe#SmartObject">SmartObject</a>
+      </li>
+      <li>
+         <a href="#http://w3id.org/semioe#System" title="http://w3id.org/semioe#System">System</a>
+      </li>
+      <li>
+         <a href="#http://w3id.org/semioe#WorkflowElement" title="http://w3id.org/semioe#WorkflowElement">WorkflowElement</a>
+      </li>
+   </ul>
+   <div class="entity" id="http://w3id.org/semioe#Activity">
+      <h3>Activity<sup class="type-c" title="class">c</sup>
+         <span class="backlink"> back to <a href="#toc">ToC</a> or <a href="#classes">Class ToC</a>
+         </span>
+      </h3>
+      <p>
+         <strong>IRI:</strong> http://w3id.org/semioe#Activity</p>
+      <div class="comment">
+         <span class="markdown">An activity in a ioe:Process of the organization.</span>
+      </div>
+      <dl class="description">
+         <dt>has super-classes</dt>
+         <dd>
+            <a href="#http://w3id.org/semioe#WorkflowElement" title="http://w3id.org/semioe#WorkflowElement">WorkflowElement</a>
+            <sup class="type-c" title="class">c</sup>
+         </dd>
+         <dt>is in domain of</dt>
+         <dd>
+            <a href="#http://w3id.org/semioe#inProcess" title="http://w3id.org/semioe#inProcess">inProcess</a>
+            <sup class="type-op" title="object property">op</sup>
+         </dd>
+         <dt>is in range of</dt>
+         <dd>
+            <a href="#http://w3id.org/semioe#engagedIn" title="http://w3id.org/semioe#engagedIn">engagedIn</a>
+            <sup class="type-op" title="object property">op</sup>
+         </dd>
+      </dl>
+   </div>
+   <div class="entity" id="http://w3id.org/semioe#Agent">
+      <h3>Agent<sup class="type-c" title="class">c</sup>
+         <span class="backlink"> back to <a href="#toc">ToC</a> or <a href="#classes">Class ToC</a>
+         </span>
+      </h3>
+      <p>
+         <strong>IRI:</strong> http://w3id.org/semioe#Agent</p>
+      <div class="comment">
+         <span class="markdown">An agent in the IoE network. The class is a generalization of foaf:Agent and ioe:SmartObject.</span>
+      </div>
+      <dl class="description">
+         <dt>is equivalent to</dt>
+         <dd>
+            <a href="#http://w3id.org/semioe#locatedIn" title="http://w3id.org/semioe#locatedIn">locatedIn</a>
+            <sup class="type-op" title="object property">op</sup> 
+            <span class="logic">exactly</span> 1 <a href="#http://w3id.org/semioe#Site" title="http://w3id.org/semioe#Site">Site</a>
+            <sup class="type-c" title="class">c</sup>
+         </dd>
+         <dt>has sub-classes</dt>
+         <dd>
+            <a href="#http://w3id.org/semioe#HAgent" title="http://w3id.org/semioe#HAgent">HAgent</a>
+            <sup class="type-c" title="class">c</sup>, <a href="#http://w3id.org/semioe#SmartObject" title="http://w3id.org/semioe#SmartObject">SmartObject</a>
+            <sup class="type-c" title="class">c</sup>
+         </dd>
+         <dt>is in domain of</dt>
+         <dd>
+            <a href="#http://w3id.org/semioe#engagedIn" title="http://w3id.org/semioe#engagedIn">engagedIn</a>
+            <sup class="type-op" title="object property">op</sup>, <a href="#http://w3id.org/semioe#locatedIn" title="http://w3id.org/semioe#locatedIn">locatedIn</a>
+            <sup class="type-op" title="object property">op</sup>
+         </dd>
+         <dt>is in range of</dt>
+         <dd>
+            <a href="#http://w3id.org/semioe#fromAgent" title="http://w3id.org/semioe#fromAgent">fromAgent</a>
+            <sup class="type-op" title="object property">op</sup>, <a href="#http://w3id.org/semioe#toAgent" title="http://w3id.org/semioe#toAgent">toAgent</a>
+            <sup class="type-op" title="object property">op</sup>
+         </dd>
+      </dl>
+   </div>
+   <div class="entity" id="http://w3id.org/semioe#AgentRelation">
+      <h3>AgentRelation<sup class="type-c" title="class">c</sup>
+         <span class="backlink"> back to <a href="#toc">ToC</a> or <a href="#classes">Class ToC</a>
+         </span>
+      </h3>
+      <p>
+         <strong>IRI:</strong> http://w3id.org/semioe#AgentRelation</p>
+      <div class="comment">
+         <span class="markdown">A relation between two Agents for the execution of an Activity. The relation involves one or more Rights of the agent which establishes the relation to the other agent.</span>
+      </div>
+      <dl class="description">
+         <dt>has super-classes</dt>
+         <dd/>
+         <dt>has sub-classes</dt>
+         <dd>
+            <a href="#http://w3id.org/semioe#Collaboration" title="http://w3id.org/semioe#Collaboration">Collaboration</a>
+            <sup class="type-c" title="class">c</sup>, <a href="#http://w3id.org/semioe#Delegation" title="http://w3id.org/semioe#Delegation">Delegation</a>
+            <sup class="type-c" title="class">c</sup>
+         </dd>
+         <dt>is in domain of</dt>
+         <dd>
+            <a href="#http://w3id.org/semioe#forWorkflowElement" title="http://w3id.org/semioe#forWorkflowElement">forWorkflowElement</a>
+            <sup class="type-op" title="object property">op</sup>, <a href="#http://w3id.org/semioe#fromAgent" title="http://w3id.org/semioe#fromAgent">fromAgent</a>
+            <sup class="type-op" title="object property">op</sup>, <a href="#http://w3id.org/semioe#toAgent" title="http://w3id.org/semioe#toAgent">toAgent</a>
+            <sup class="type-op" title="object property">op</sup>
+         </dd>
+      </dl>
+   </div>
+   <div class="entity" id="http://w3id.org/semioe#Collaboration">
+      <h3>Collaboration<sup class="type-c" title="class">c</sup>
+         <span class="backlink"> back to <a href="#toc">ToC</a> or <a href="#classes">Class ToC</a>
+         </span>
+      </h3>
+      <p>
+         <strong>IRI:</strong> http://w3id.org/semioe#Collaboration</p>
+      <div class="comment">
+         <span class="markdown">A type of ActorRelation which involves a collaboration between two Agents.</span>
+      </div>
+      <dl class="description">
+         <dt>has super-classes</dt>
+         <dd>
+            <a href="#http://w3id.org/semioe#AgentRelation" title="http://w3id.org/semioe#AgentRelation">AgentRelation</a>
+            <sup class="type-c" title="class">c</sup>
+         </dd>
+      </dl>
+   </div>
+   <div class="entity" id="http://w3id.org/semioe#CurrentRole">
+      <h3>CurrentRole<sup class="type-c" title="class">c</sup>
+         <span class="backlink"> back to <a href="#toc">ToC</a> or <a href="#classes">Class ToC</a>
+         </span>
+      </h3>
+      <p>
+         <strong>IRI:</strong> http://w3id.org/semioe#CurrentRole</p>
+      <div class="comment">
+         <span class="markdown">The current role of a foaf:Agent.</span>
+      </div>
+      <dl class="description">
+         <dt>has super-classes</dt>
+         <dd>
+            <a href="http://www.w3.org/ns/org#Role"
+               target="_blank"
+               title="http://www.w3.org/ns/org#Role">role</a>
+         </dd>
+         <dt>is in domain of</dt>
+         <dd>
+            <a href="#http://w3id.org/semioe#endTime" title="http://w3id.org/semioe#endTime">endTime</a>
+            <sup class="type-dp" title="data property">dp</sup>, <a href="#http://w3id.org/semioe#isTransferrable" title="http://w3id.org/semioe#isTransferrable">isTransferable</a>
+            <sup class="type-dp" title="data property">dp</sup>, <a href="#http://w3id.org/semioe#startTime" title="http://w3id.org/semioe#startTime">startTime</a>
+            <sup class="type-dp" title="data property">dp</sup>
+         </dd>
+         <dt>is in range of</dt>
+         <dd>
+            <a href="#http://w3id.org/semioe#forRole" title="http://w3id.org/semioe#forRole">for role</a>
+            <sup class="type-op" title="object property">op</sup>
+         </dd>
+      </dl>
+   </div>
+   <div class="entity" id="http://w3id.org/semioe#Delegation">
+      <h3>Delegation<sup class="type-c" title="class">c</sup>
+         <span class="backlink"> back to <a href="#toc">ToC</a> or <a href="#classes">Class ToC</a>
+         </span>
+      </h3>
+      <p>
+         <strong>IRI:</strong> http://w3id.org/semioe#Delegation</p>
+      <div class="comment">
+         <span class="markdown">A type of ActorRelation which involves a delegation of tasks from an Agent to another Agent.</span>
+      </div>
+      <dl class="description">
+         <dt>has super-classes</dt>
+         <dd>
+            <a href="#http://w3id.org/semioe#AgentRelation" title="http://w3id.org/semioe#AgentRelation">AgentRelation</a>
+            <sup class="type-c" title="class">c</sup>
+         </dd>
+      </dl>
+   </div>
+   <div class="entity" id="http://w3id.org/semioe#HAgent">
+      <h3>HAgent<sup class="type-c" title="class">c</sup>
+         <span class="backlink"> back to <a href="#toc">ToC</a> or <a href="#classes">Class ToC</a>
+         </span>
+      </h3>
+      <p>
+         <strong>IRI:</strong> http://w3id.org/semioe#HAgent</p>
+      <div class="comment">
+         <span class="markdown">A human agent.</span>
+      </div>
+      <dl class="description">
+         <dt>has super-classes</dt>
+         <dd>
+            <a href="#http://w3id.org/semioe#Agent" title="http://w3id.org/semioe#Agent">Agent</a>
+            <sup class="type-c" title="class">c</sup>, <a href="http://xmlns.com/foaf/0.1/Agent"
+               target="_blank"
+               title="http://xmlns.com/foaf/0.1/Agent">agent</a>
+         </dd>
+      </dl>
+   </div>
+   <div class="entity" id="http://w3id.org/semioe#Process">
+      <h3>Process<sup class="type-c" title="class">c</sup>
+         <span class="backlink"> back to <a href="#toc">ToC</a> or <a href="#classes">Class ToC</a>
+         </span>
+      </h3>
+      <p>
+         <strong>IRI:</strong> http://w3id.org/semioe#Process</p>
+      <div class="comment">
+         <span class="markdown">A process defined by the organization.</span>
+      </div>
+      <dl class="description">
+         <dt>has super-classes</dt>
+         <dd>
+            <a href="#http://w3id.org/semioe#WorkflowElement" title="http://w3id.org/semioe#WorkflowElement">WorkflowElement</a>
+            <sup class="type-c" title="class">c</sup>
+         </dd>
+         <dt>is in range of</dt>
+         <dd>
+            <a href="#http://w3id.org/semioe#inProcess" title="http://w3id.org/semioe#inProcess">inProcess</a>
+            <sup class="type-op" title="object property">op</sup>
+         </dd>
+      </dl>
+   </div>
+   <div class="entity" id="http://w3id.org/semioe#Right">
+      <h3>Right<sup class="type-c" title="class">c</sup>
+         <span class="backlink"> back to <a href="#toc">ToC</a> or <a href="#classes">Class ToC</a>
+         </span>
+      </h3>
+      <p>
+         <strong>IRI:</strong> http://w3id.org/semioe#Right</p>
+      <div class="comment">
+         <span class="markdown">A right that can be associated to the ioe:CurrentRole of a foaf:Agent.</span>
+      </div>
+      <dl class="description">
+         <dt>has super-classes</dt>
+         <dd/>
+         <dt>has sub-classes</dt>
+         <dd>
+            <a href="#http://w3id.org/semioe#RightOnEnvironment" title="http://w3id.org/semioe#RightOnEnvironment">RightOnEnvironment</a>
+            <sup class="type-c" title="class">c</sup>, <a href="#http://w3id.org/semioe#RightOnSmartObject" title="http://w3id.org/semioe#RightOnSmartObject">RightOnSmartObject</a>
+            <sup class="type-c" title="class">c</sup>, <a href="#http://w3id.org/semioe#RightOnSystem" title="http://w3id.org/semioe#RightOnSystem">RightOnSystem</a>
+            <sup class="type-c" title="class">c</sup>
+         </dd>
+         <dt>is in domain of</dt>
+         <dd>
+            <a href="#http://w3id.org/semioe#forRole" title="http://w3id.org/semioe#forRole">for role</a>
+            <sup class="type-op" title="object property">op</sup>, <a href="#http://w3id.org/semioe#hasType" title="http://w3id.org/semioe#hasType">hasType</a>
+            <sup class="type-op" title="object property">op</sup>
+         </dd>
+      </dl>
+   </div>
+   <div class="entity" id="http://w3id.org/semioe#RightOnEnvironment">
+      <h3>RightOnEnvironment<sup class="type-c" title="class">c</sup>
+         <span class="backlink"> back to <a href="#toc">ToC</a> or <a href="#classes">Class ToC</a>
+         </span>
+      </h3>
+      <p>
+         <strong>IRI:</strong> http://w3id.org/semioe#RightOnEnvironment</p>
+      <div class="comment">
+         <span class="markdown">A type of ioe:Right that is defined on all ioe:SmartObjects located in a ioe:Environment.</span>
+      </div>
+      <dl class="description">
+         <dt>has super-classes</dt>
+         <dd>
+            <a href="#http://w3id.org/semioe#Right" title="http://w3id.org/semioe#Right">Right</a>
+            <sup class="type-c" title="class">c</sup>
+         </dd>
+         <dt>is in domain of</dt>
+         <dd>
+            <a href="#http://w3id.org/semioe#onEnvironment" title="http://w3id.org/semioe#onEnvironment">onEnvironment</a>
+            <sup class="type-op" title="object property">op</sup>
+         </dd>
+      </dl>
+   </div>
+   <div class="entity" id="http://w3id.org/semioe#RightOnSmartObject">
+      <h3>RightOnSmartObject<sup class="type-c" title="class">c</sup>
+         <span class="backlink"> back to <a href="#toc">ToC</a> or <a href="#classes">Class ToC</a>
+         </span>
+      </h3>
+      <p>
+         <strong>IRI:</strong> http://w3id.org/semioe#RightOnSmartObject</p>
+      <div class="comment">
+         <span class="markdown">A type of ioe:Right that is defined on a ioe:SmartObject, including all its ssn:Systems.</span>
+      </div>
+      <dl class="description">
+         <dt>has super-classes</dt>
+         <dd>
+            <a href="#http://w3id.org/semioe#Right" title="http://w3id.org/semioe#Right">Right</a>
+            <sup class="type-c" title="class">c</sup>
+         </dd>
+         <dt>is in domain of</dt>
+         <dd>
+            <a href="#http://w3id.org/semioe#onSmartObject" title="http://w3id.org/semioe#onSmartObject">onSmartObject</a>
+            <sup class="type-op" title="object property">op</sup>
+         </dd>
+      </dl>
+   </div>
+   <div class="entity" id="http://w3id.org/semioe#RightOnSystem">
+      <h3>RightOnSystem<sup class="type-c" title="class">c</sup>
+         <span class="backlink"> back to <a href="#toc">ToC</a> or <a href="#classes">Class ToC</a>
+         </span>
+      </h3>
+      <p>
+         <strong>IRI:</strong> http://w3id.org/semioe#RightOnSystem</p>
+      <div class="comment">
+         <span class="markdown">A type of ioe:Right that is defined on a ioe:System.</span>
+      </div>
+      <dl class="description">
+         <dt>has super-classes</dt>
+         <dd>
+            <a href="#http://w3id.org/semioe#Right" title="http://w3id.org/semioe#Right">Right</a>
+            <sup class="type-c" title="class">c</sup>
+         </dd>
+         <dt>is in domain of</dt>
+         <dd>
+            <a href="#http://w3id.org/semioe#onSystem" title="http://w3id.org/semioe#onSystem">onSystem</a>
+            <sup class="type-op" title="object property">op</sup>
+         </dd>
+      </dl>
+   </div>
+   <div class="entity" id="http://w3id.org/semioe#RightType">
+      <h3>RightType<sup class="type-c" title="class">c</sup>
+         <span class="backlink"> back to <a href="#toc">ToC</a> or <a href="#classes">Class ToC</a>
+         </span>
+      </h3>
+      <p>
+         <strong>IRI:</strong> http://w3id.org/semioe#RightType</p>
+      <div class="comment">
+         <span class="markdown">The type of a ioe:Right, e.g. read, write.</span>
+      </div>
+      <dl class="description">
+         <dt>is in range of</dt>
+         <dd>
+            <a href="#http://w3id.org/semioe#hasType" title="http://w3id.org/semioe#hasType">hasType</a>
+            <sup class="type-op" title="object property">op</sup>
+         </dd>
+      </dl>
+   </div>
+   <div class="entity" id="http://w3id.org/semioe#Site">
+      <h3>Site<sup class="type-c" title="class">c</sup>
+         <span class="backlink"> back to <a href="#toc">ToC</a> or <a href="#classes">Class ToC</a>
+         </span>
+      </h3>
+      <p>
+         <strong>IRI:</strong> http://w3id.org/semioe#Site</p>
+      <div class="comment">
+         <span class="markdown">A location in the organization, e.g. a room, a building.</span>
+      </div>
+      <dl class="description">
+         <dt>has super-classes</dt>
+         <dd>
+            <a href="http://www.w3.org/ns/org#Site"
+               target="_blank"
+               title="http://www.w3.org/ns/org#Site">site</a>, <a href="https://w3id.org/bot#Site"
+               target="_blank"
+               title="https://w3id.org/bot#Site">site</a>
+            <sup class="type-c" title="class">c</sup>
+         </dd>
+         <dt>is in range of</dt>
+         <dd>
+            <a href="#http://w3id.org/semioe#locatedIn" title="http://w3id.org/semioe#locatedIn">locatedIn</a>
+            <sup class="type-op" title="object property">op</sup>, <a href="#http://w3id.org/semioe#onEnvironment" title="http://w3id.org/semioe#onEnvironment">onEnvironment</a>
+            <sup class="type-op" title="object property">op</sup>
+         </dd>
+      </dl>
+   </div>
+   <div class="entity" id="http://w3id.org/semioe#SmartObject">
+      <h3>SmartObject<sup class="type-c" title="class">c</sup>
+         <span class="backlink"> back to <a href="#toc">ToC</a> or <a href="#classes">Class ToC</a>
+         </span>
+      </h3>
+      <p>
+         <strong>IRI:</strong> http://w3id.org/semioe#SmartObject</p>
+      <div class="comment">
+         <span class="markdown">A smart object in the IoE network, which can include one or more ssn:System.</span>
+      </div>
+      <dl class="description">
+         <dt>has super-classes</dt>
+         <dd>
+            <a href="#http://w3id.org/semioe#Agent" title="http://w3id.org/semioe#Agent">Agent</a>
+            <sup class="type-c" title="class">c</sup>
+         </dd>
+         <dt>is in range of</dt>
+         <dd>
+            <a href="#http://w3id.org/semioe#includedIn" title="http://w3id.org/semioe#includedIn">includedIn</a>
+            <sup class="type-op" title="object property">op</sup>, <a href="#http://w3id.org/semioe#onSmartObject" title="http://w3id.org/semioe#onSmartObject">onSmartObject</a>
+            <sup class="type-op" title="object property">op</sup>
+         </dd>
+      </dl>
+   </div>
+   <div class="entity" id="http://w3id.org/semioe#System">
+      <h3>System<sup class="type-c" title="class">c</sup>
+         <span class="backlink"> back to <a href="#toc">ToC</a> or <a href="#classes">Class ToC</a>
+         </span>
+      </h3>
+      <p>
+         <strong>IRI:</strong> http://w3id.org/semioe#System</p>
+      <div class="comment">
+         <span class="markdown">A system inside a SmartObject</span>
+      </div>
+      <dl class="description">
+         <dt>is equivalent to</dt>
+         <dd>
+            <a href="#http://w3id.org/semioe#locatedIn" title="http://w3id.org/semioe#locatedIn">locatedIn</a>
+            <sup class="type-op" title="object property">op</sup> 
+            <span class="logic">exactly</span> 1 <a href="#http://w3id.org/semioe#SmartObject" title="http://w3id.org/semioe#SmartObject">SmartObject</a>
+            <sup class="type-c" title="class">c</sup>
+         </dd>
+         <dt>has super-classes</dt>
+         <dd>
+            <a href="http://www.w3.org/ns/ssn/System"
+               target="_blank"
+               title="http://www.w3.org/ns/ssn/System">system</a>
+            <sup class="type-c" title="class">c</sup>
+         </dd>
+         <dt>is in domain of</dt>
+         <dd>
+            <a href="#http://w3id.org/semioe#includedIn" title="http://w3id.org/semioe#includedIn">includedIn</a>
+            <sup class="type-op" title="object property">op</sup>
+         </dd>
+      </dl>
+   </div>
+   <div class="entity" id="http://w3id.org/semioe#WorkflowElement">
+      <h3>WorkflowElement<sup class="type-c" title="class">c</sup>
+         <span class="backlink"> back to <a href="#toc">ToC</a> or <a href="#classes">Class ToC</a>
+         </span>
+      </h3>
+      <p>
+         <strong>IRI:</strong> http://w3id.org/semioe#WorkflowElement</p>
+      <div class="comment">
+         <span class="markdown">A generic workflow element, which can be either an ioe:Activity or an ioe:Process in the organization.</span>
+      </div>
+      <dl class="description">
+         <dt>has sub-classes</dt>
+         <dd>
+            <a href="#http://w3id.org/semioe#Activity" title="http://w3id.org/semioe#Activity">Activity</a>
+            <sup class="type-c" title="class">c</sup>, <a href="#http://w3id.org/semioe#Process" title="http://w3id.org/semioe#Process">Process</a>
+            <sup class="type-c" title="class">c</sup>
+         </dd>
+         <dt>is in range of</dt>
+         <dd>
+            <a href="#http://w3id.org/semioe#forWorkflowElement" title="http://w3id.org/semioe#forWorkflowElement">forWorkflowElement</a>
+            <sup class="type-op" title="object property">op</sup>
+         </dd>
+      </dl>
+   </div>
+</div><div xmlns:widoco="https://w3id.org/widoco/vocab#"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     id="objectproperties">
+   <h3 id="properties" class="list">Object Properties</h3>
+   <ul class="hlist">
+      <li>
+         <a href="#http://w3id.org/semioe#engagedIn" title="http://w3id.org/semioe#engagedIn">engagedIn</a>
+      </li>
+      <li>
+         <a href="#http://w3id.org/semioe#forRole" title="http://w3id.org/semioe#forRole">
+            <span>for role</span>
+         </a>
+      </li>
+      <li>
+         <a href="#http://w3id.org/semioe#forWorkflowElement" title="http://w3id.org/semioe#forWorkflowElement">forWorkflowElement</a>
+      </li>
+      <li>
+         <a href="#http://w3id.org/semioe#fromAgent" title="http://w3id.org/semioe#fromAgent">fromAgent</a>
+      </li>
+      <li>
+         <a href="#http://w3id.org/semioe#hasType" title="http://w3id.org/semioe#hasType">hasType</a>
+      </li>
+      <li>
+         <a href="#http://w3id.org/semioe#includedIn" title="http://w3id.org/semioe#includedIn">includedIn</a>
+      </li>
+      <li>
+         <a href="#http://w3id.org/semioe#inProcess" title="http://w3id.org/semioe#inProcess">inProcess</a>
+      </li>
+      <li>
+         <a href="#http://w3id.org/semioe#locatedIn" title="http://w3id.org/semioe#locatedIn">locatedIn</a>
+      </li>
+      <li>
+         <a href="#http://w3id.org/semioe#onEnvironment" title="http://w3id.org/semioe#onEnvironment">onEnvironment</a>
+      </li>
+      <li>
+         <a href="#http://w3id.org/semioe#onSmartObject" title="http://w3id.org/semioe#onSmartObject">onSmartObject</a>
+      </li>
+      <li>
+         <a href="#http://w3id.org/semioe#onSystem" title="http://w3id.org/semioe#onSystem">onSystem</a>
+      </li>
+      <li>
+         <a href="#http://w3id.org/semioe#toAgent" title="http://w3id.org/semioe#toAgent">toAgent</a>
+      </li>
+   </ul>
+   <div class="entity" id="http://w3id.org/semioe#engagedIn">
+      <h3>engagedIn<sup class="type-op" title="object property">op</sup>
+         <span class="backlink"> back to <a href="#toc">ToC</a> or <a href="#objectproperties">Object Property ToC</a>
+         </span>
+      </h3>
+      <p>
+         <strong>IRI:</strong> http://w3id.org/semioe#engagedIn</p>
+      <div class="comment">
+         <span class="markdown">Relates an ioe:Agent to the ioe:Activity which she/he is engaged with.</span>
+      </div>
+      <div class="description">
+         <dl>
+            <dt>has domain</dt>
             <dd>
-              <code>http://w3id.org/semioe#</code>
+               <a href="#http://w3id.org/semioe#Agent" title="http://w3id.org/semioe#Agent">Agent</a>
+               <sup class="type-c" title="class">c</sup>
             </dd>
-          </div>
-          <div>
-            <dt>
-              <a class="hover_property" href="http://purl.org/dc/terms/title" title="A name given to the resource. Defined in DCMI Metadata Terms">Title</a>
-            </dt>
-            <dd><p>SemIoE</p></dd>
-          </div>
-          <div>
-            <dt>
-              <a class="hover_property" href="http://purl.org/dc/terms/creator" title="An entity responsible for making the resource. Defined in DCMI Metadata Terms">Creator</a>
-            </dt>
+            <dt>has range</dt>
             <dd>
-              <ul>
-                <li>
-                  <span>
-                    <span>Emanuele Storti  (e.storti@univpm.it)</span>
-                  </span>
-                </li>
-                <li>
-                  <span>
-                    <span>Antonino Nocera  (antonino.nocera@unipv.it)</span>
-                  </span>
-                </li>
-                <li>
-                  <span>
-                    <span>Marco Arazzi (marco.arazzi01@universitadipavia.it)</span>
-                  </span>
-                </li>
-              </ul>
+               <a href="#http://w3id.org/semioe#Activity" title="http://w3id.org/semioe#Activity">Activity</a>
+               <sup class="type-c" title="class">c</sup>
             </dd>
-          </div>
-          <div>
-            <dt>
-              <a class="hover_property" href="http://purl.org/dc/terms/license" title="A legal document giving official permission to do something with the resource. Defined in DCMI Metadata Terms">License</a>
-            </dt>
+         </dl>
+      </div>
+   </div>
+   <div class="entity" id="http://w3id.org/semioe#forRole">
+      <h3>for role<sup class="type-op" title="object property">op</sup>
+         <span class="backlink"> back to <a href="#toc">ToC</a> or <a href="#objectproperties">Object Property ToC</a>
+         </span>
+      </h3>
+      <p>
+         <strong>IRI:</strong> http://w3id.org/semioe#forRole</p>
+      <div class="description">
+         <dl>
+            <dt>has domain</dt>
             <dd>
-              <a href="https://creativecommons.org/licenses/by/4.0">https://creativecommons.org/licenses/by/4.0</a>
+               <a href="#http://w3id.org/semioe#Right" title="http://w3id.org/semioe#Right">Right</a>
+               <sup class="type-c" title="class">c</sup>
             </dd>
-          </div>
-          <div>
-            <dt>
-              <a class="hover_property" href="http://www.w3.org/2002/07/owl#versionInfo" title="The annotation property that provides version information for an ontology or another OWL construct. Defined in The OWL 2 Schema vocabulary (OWL 2)">Version Info</a>
-            </dt>
-            <dd><p>0.9</p></dd>
-          </div>
-          <div>
-            <dt>
-              <a class="hover_property" href="http://purl.org/vocab/vann/preferredNamespacePrefix" title="None. Defined in None">Preferred Namespace Prefix</a>
-            </dt>
-            <dd><p>ioe</p></dd>
-          </div>
-          <div>
-            <dt>
-              <a class="hover_property" href="http://purl.org/vocab/vann/preferredNamespaceUri" title="None. Defined in None">Preferred Namespace Uri</a>
-            </dt>
+            <dt>has range</dt>
             <dd>
-              <a href="https://w3id.org/semioe#">https://w3id.org/semioe#</a>
+               <a href="#http://w3id.org/semioe#CurrentRole" title="http://w3id.org/semioe#CurrentRole">CurrentRole</a>
+               <sup class="type-c" title="class">c</sup>
             </dd>
-          </div>
-          <div>
-            <dt>
-              <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-            </dt>
-            <dd><p>The SemIoE ontology is aimed to represent resources and their relations in a Internet-of-Everything network.</p></dd>
-          </div>
-        </dl>
+         </dl>
       </div>
-      <div class="section" id="classes">
-        <h2>Classes</h2>
-        <div class="property entity" id="Activity">
-          <h3>Activity
-            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://w3id.org/semioe#Activity</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>An activity in a ioe:Process of the organization.</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subClassOf" title="The subject is a subclass of a class. Defined in The RDF Schema vocabulary (RDFS)">Sub Class Of</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#WorkflowElement">WorkflowElement</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inDomainOf" title="Inverse of rdfs:domain. Defined in Ontology Documentation Profile">In Domain Of</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#inProcess">inProcess</a>
-                  <sup class="sup-op" title="OWL Object Property">op</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inRangeOf" title="Inverse of rdfs:range. Defined in Ontology Documentation Profile">In Range Of</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#engagedIn">engagedIn</a>
-                  <sup class="sup-op" title="OWL Object Property">op</sup>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="Agent">
-          <h3>Agent
-            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://w3id.org/semioe#Agent</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>An agent in the IoE network. The class is a generalization of foaf:Agent and ioe:SmartObject.</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2002/07/owl#equivalentClass" title="The property that determines that two given classes are equivalent, and that is used to specify datatype definitions. Defined in The OWL 2 Schema vocabulary (OWL 2)">Equivalentclass</a>
-              </th>
-              <td>
-                <span>
-                  <span>
-                    <span>
-                      <a href="http://w3id.org/semioe#locatedIn">locatedIn</a>
-                      <sup class="sup-op" title="OWL Object Property">op</sup>
-                    </span>
-                    <span>
-                      <span class="cardinality">exactly</span>
-                      <span>1</span>
-                    </span><br>
-                  </span>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inDomainOf" title="Inverse of rdfs:domain. Defined in Ontology Documentation Profile">In Domain Of</a>
-              </th>
-              <td>
-                <ul>
-                  <li>
-                    <span>
-                      <a href="http://w3id.org/semioe#engagedIn">engagedIn</a>
-                      <sup class="sup-op" title="OWL Object Property">op</sup>
-                    </span>
-                  </li>
-                  <li>
-                    <span>
-                      <a href="http://w3id.org/semioe#locatedIn">locatedIn</a>
-                      <sup class="sup-op" title="OWL Object Property">op</sup>
-                    </span>
-                  </li>
-                </ul>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inRangeOf" title="Inverse of rdfs:range. Defined in Ontology Documentation Profile">In Range Of</a>
-              </th>
-              <td>
-                <ul>
-                  <li>
-                    <span>
-                      <a href="http://w3id.org/semioe#fromAgent">fromAgent</a>
-                      <sup class="sup-op" title="OWL Object Property">op</sup>
-                    </span>
-                  </li>
-                  <li>
-                    <span>
-                      <a href="http://w3id.org/semioe#toAgent">toAgent</a>
-                      <sup class="sup-op" title="OWL Object Property">op</sup>
-                    </span>
-                  </li>
-                </ul>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="https://w3id.org/profile/ontdoc/superClassOf" title="Inverse of RDFS' subClassOf. Defined in Ontology Documentation Profile">Super Class Of</a>
-              </th>
-              <td>
-                <ul>
-                  <li>
-                    <span>
-                      <a href="http://w3id.org/semioe#HAgent">HAgent</a>
-                      <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                    </span>
-                  </li>
-                  <li>
-                    <span>
-                      <a href="http://w3id.org/semioe#SmartObject">SmartObject</a>
-                      <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                    </span>
-                  </li>
-                </ul>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="AgentRelation">
-          <h3>AgentRelation
-            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://w3id.org/semioe#AgentRelation</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>A relation between two Agents for the execution of an Activity. The relation involves one or more Rights of the agent which establishes the relation to the other agent.</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inDomainOf" title="Inverse of rdfs:domain. Defined in Ontology Documentation Profile">In Domain Of</a>
-              </th>
-              <td>
-                <ul>
-                  <li>
-                    <span>
-                      <a href="http://w3id.org/semioe#forWorkflowElement">forWorkflowElement</a>
-                      <sup class="sup-op" title="OWL Object Property">op</sup>
-                    </span>
-                  </li>
-                  <li>
-                    <span>
-                      <a href="http://w3id.org/semioe#fromAgent">fromAgent</a>
-                      <sup class="sup-op" title="OWL Object Property">op</sup>
-                    </span>
-                  </li>
-                  <li>
-                    <span>
-                      <a href="http://w3id.org/semioe#toAgent">toAgent</a>
-                      <sup class="sup-op" title="OWL Object Property">op</sup>
-                    </span>
-                  </li>
-                </ul>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="https://w3id.org/profile/ontdoc/restriction" title="Convenience property for things that subclass owl:Restriction. Defined in Ontology Documentation Profile">Restriction</a>
-              </th>
-              <td>
-                <ul>
-                  <li>
-                    <span>
-                      <span>
-                        <span>
-                          <a href="http://w3id.org/semioe#forWorkflowElement">forWorkflowElement</a>
-                          <sup class="sup-op" title="OWL Object Property">op</sup>
-                        </span>some<br>
-                      </span>
-                    </span>
-                  </li>
-                  <li>
-                    <span>
-                      <span>
-                        <span>
-                          <a href="http://w3id.org/semioe#fromAgent">fromAgent</a>
-                          <sup class="sup-op" title="OWL Object Property">op</sup>
-                        </span>some<br>
-                      </span>
-                    </span>
-                  </li>
-                  <li>
-                    <span>
-                      <span>
-                        <span>
-                          <a href="http://w3id.org/semioe#toAgent">toAgent</a>
-                          <sup class="sup-op" title="OWL Object Property">op</sup>
-                        </span>some<br>
-                      </span>
-                    </span>
-                  </li>
-                </ul>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="https://w3id.org/profile/ontdoc/superClassOf" title="Inverse of RDFS' subClassOf. Defined in Ontology Documentation Profile">Super Class Of</a>
-              </th>
-              <td>
-                <ul>
-                  <li>
-                    <span>
-                      <a href="http://w3id.org/semioe#Collaboration">Collaboration</a>
-                      <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                    </span>
-                  </li>
-                  <li>
-                    <span>
-                      <a href="http://w3id.org/semioe#Delegation">Delegation</a>
-                      <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                    </span>
-                  </li>
-                </ul>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="Collaboration">
-          <h3>Collaboration
-            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://w3id.org/semioe#Collaboration</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>A type of ActorRelation which involves a collaboration between two Agents.</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subClassOf" title="The subject is a subclass of a class. Defined in The RDF Schema vocabulary (RDFS)">Sub Class Of</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#AgentRelation">AgentRelation</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="CurrentRole">
-          <h3>CurrentRole
-            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://w3id.org/semioe#CurrentRole</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>The current role of a foaf:Agent.</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subClassOf" title="The subject is a subclass of a class. Defined in The RDF Schema vocabulary (RDFS)">Sub Class Of</a>
-              </th>
-              <td>
-                <a href="http://www.w3.org/ns/org#Role">org:Role</a>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inDomainOf" title="Inverse of rdfs:domain. Defined in Ontology Documentation Profile">In Domain Of</a>
-              </th>
-              <td>
-                <ul>
-                  <li>
-                    <span>
-                      <a href="http://w3id.org/semioe#endTime">endTime</a>
-                      <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
-                    </span>
-                  </li>
-                  <li>
-                    <span>
-                      <a href="http://w3id.org/semioe#isTransferable">isTransferable</a>
-                      <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
-                    </span>
-                  </li>
-                  <li>
-                    <span>
-                      <a href="http://w3id.org/semioe#startTime">startTime</a>
-                      <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
-                    </span>
-                  </li>
-                </ul>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inRangeOf" title="Inverse of rdfs:range. Defined in Ontology Documentation Profile">In Range Of</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#forRole">ioe:forRole</a>
-                  <sup class="sup-op" title="OWL Object Property">op</sup>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="Delegation">
-          <h3>Delegation
-            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://w3id.org/semioe#Delegation</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>A type of ActorRelation which involves a delegation of tasks from an Agent to another Agent.</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subClassOf" title="The subject is a subclass of a class. Defined in The RDF Schema vocabulary (RDFS)">Sub Class Of</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#AgentRelation">AgentRelation</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="HAgent">
-          <h3>HAgent
-            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://w3id.org/semioe#HAgent</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>A human agent.</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subClassOf" title="The subject is a subclass of a class. Defined in The RDF Schema vocabulary (RDFS)">Sub Class Of</a>
-              </th>
-              <td>
-                <ul>
-                  <li>
-                    <span>
-                      <a href="http://w3id.org/semioe#Agent">Agent</a>
-                      <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                    </span>
-                  </li>
-                  <li>
-                    <a href="http://xmlns.com/foaf/0.1/Agent">foaf:Agent</a>
-                  </li>
-                </ul>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="Process">
-          <h3>Process
-            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://w3id.org/semioe#Process</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>A process defined by the organization.</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subClassOf" title="The subject is a subclass of a class. Defined in The RDF Schema vocabulary (RDFS)">Sub Class Of</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#WorkflowElement">WorkflowElement</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inRangeOf" title="Inverse of rdfs:range. Defined in Ontology Documentation Profile">In Range Of</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#inProcess">inProcess</a>
-                  <sup class="sup-op" title="OWL Object Property">op</sup>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="Right">
-          <h3>Right
-            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://w3id.org/semioe#Right</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>A right that can be associated to the ioe:CurrentRole of a foaf:Agent.</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inDomainOf" title="Inverse of rdfs:domain. Defined in Ontology Documentation Profile">In Domain Of</a>
-              </th>
-              <td>
-                <ul>
-                  <li>
-                    <span>
-                      <a href="http://w3id.org/semioe#forRole">ioe:forRole</a>
-                      <sup class="sup-op" title="OWL Object Property">op</sup>
-                    </span>
-                  </li>
-                  <li>
-                    <span>
-                      <a href="http://w3id.org/semioe#hasType">hasType</a>
-                      <sup class="sup-op" title="OWL Object Property">op</sup>
-                    </span>
-                  </li>
-                </ul>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="https://w3id.org/profile/ontdoc/restriction" title="Convenience property for things that subclass owl:Restriction. Defined in Ontology Documentation Profile">Restriction</a>
-              </th>
-              <td>
-                <span>
-                  <span>
-                    <span>
-                      <a href="http://w3id.org/semioe#hasType">hasType</a>
-                      <sup class="sup-op" title="OWL Object Property">op</sup>
-                    </span>some<br>
-                  </span>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="https://w3id.org/profile/ontdoc/superClassOf" title="Inverse of RDFS' subClassOf. Defined in Ontology Documentation Profile">Super Class Of</a>
-              </th>
-              <td>
-                <ul>
-                  <li>
-                    <span>
-                      <a href="http://w3id.org/semioe#RightOnEnvironment">RightOnEnvironment</a>
-                      <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                    </span>
-                  </li>
-                  <li>
-                    <span>
-                      <a href="http://w3id.org/semioe#RightOnSmartObject">RightOnSmartObject</a>
-                      <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                    </span>
-                  </li>
-                  <li>
-                    <span>
-                      <a href="http://w3id.org/semioe#RightOnSystem">RightOnSystem</a>
-                      <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                    </span>
-                  </li>
-                </ul>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="RightOnEnvironment">
-          <h3>RightOnEnvironment
-            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://w3id.org/semioe#RightOnEnvironment</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>A type of ioe:Right that is defined on all ioe:SmartObjects located in a ioe:Environment.</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subClassOf" title="The subject is a subclass of a class. Defined in The RDF Schema vocabulary (RDFS)">Sub Class Of</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#Right">Right</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inDomainOf" title="Inverse of rdfs:domain. Defined in Ontology Documentation Profile">In Domain Of</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#onEnvironment">onEnvironment</a>
-                  <sup class="sup-op" title="OWL Object Property">op</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="https://w3id.org/profile/ontdoc/restriction" title="Convenience property for things that subclass owl:Restriction. Defined in Ontology Documentation Profile">Restriction</a>
-              </th>
-              <td>
-                <span>
-                  <span>
-                    <span>
-                      <a href="http://w3id.org/semioe#onEnvironment">onEnvironment</a>
-                      <sup class="sup-op" title="OWL Object Property">op</sup>
-                    </span>some<br>
-                  </span>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="RightOnSmartObject">
-          <h3>RightOnSmartObject
-            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://w3id.org/semioe#RightOnSmartObject</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>A type of ioe:Right that is defined on a ioe:SmartObject, including all its ssn:Systems.</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subClassOf" title="The subject is a subclass of a class. Defined in The RDF Schema vocabulary (RDFS)">Sub Class Of</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#Right">Right</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inDomainOf" title="Inverse of rdfs:domain. Defined in Ontology Documentation Profile">In Domain Of</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#onSmartObject">onSmartObject</a>
-                  <sup class="sup-op" title="OWL Object Property">op</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="https://w3id.org/profile/ontdoc/restriction" title="Convenience property for things that subclass owl:Restriction. Defined in Ontology Documentation Profile">Restriction</a>
-              </th>
-              <td>
-                <span>
-                  <span>
-                    <span>
-                      <a href="http://w3id.org/semioe#onSmartObject">onSmartObject</a>
-                      <sup class="sup-op" title="OWL Object Property">op</sup>
-                    </span>some<br>
-                  </span>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="RightOnSystem">
-          <h3>RightOnSystem
-            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://w3id.org/semioe#RightOnSystem</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>A type of ioe:Right that is defined on a ioe:System.</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subClassOf" title="The subject is a subclass of a class. Defined in The RDF Schema vocabulary (RDFS)">Sub Class Of</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#Right">Right</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inDomainOf" title="Inverse of rdfs:domain. Defined in Ontology Documentation Profile">In Domain Of</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#onSystem">onSystem</a>
-                  <sup class="sup-op" title="OWL Object Property">op</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="https://w3id.org/profile/ontdoc/restriction" title="Convenience property for things that subclass owl:Restriction. Defined in Ontology Documentation Profile">Restriction</a>
-              </th>
-              <td>
-                <span>
-                  <span>
-                    <span>
-                      <a href="http://w3id.org/semioe#onSystem">onSystem</a>
-                      <sup class="sup-op" title="OWL Object Property">op</sup>
-                    </span>some<br>
-                  </span>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="RightType">
-          <h3>RightType
-            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://w3id.org/semioe#RightType</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>The type of a ioe:Right, e.g. read, write.</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inRangeOf" title="Inverse of rdfs:range. Defined in Ontology Documentation Profile">In Range Of</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#hasType">hasType</a>
-                  <sup class="sup-op" title="OWL Object Property">op</sup>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="Site">
-          <h3>Site
-            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://w3id.org/semioe#Site</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>A location in the organization, e.g. a room, a building.</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subClassOf" title="The subject is a subclass of a class. Defined in The RDF Schema vocabulary (RDFS)">Sub Class Of</a>
-              </th>
-              <td>
-                <ul>
-                  <li>
-                    <a href="http://www.w3.org/ns/org#Site">org:Site</a>
-                  </li>
-                  <li>
-                    <a href="https://w3id.org/bot#Site">bot:Site</a>
-                  </li>
-                </ul>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inRangeOf" title="Inverse of rdfs:range. Defined in Ontology Documentation Profile">In Range Of</a>
-              </th>
-              <td>
-                <ul>
-                  <li>
-                    <span>
-                      <a href="http://w3id.org/semioe#locatedIn">locatedIn</a>
-                      <sup class="sup-op" title="OWL Object Property">op</sup>
-                    </span>
-                  </li>
-                  <li>
-                    <span>
-                      <a href="http://w3id.org/semioe#onEnvironment">onEnvironment</a>
-                      <sup class="sup-op" title="OWL Object Property">op</sup>
-                    </span>
-                  </li>
-                </ul>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="SmartObject">
-          <h3>SmartObject
-            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://w3id.org/semioe#SmartObject</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>A smart object in the IoE network, which can include one or more ssn:System.</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subClassOf" title="The subject is a subclass of a class. Defined in The RDF Schema vocabulary (RDFS)">Sub Class Of</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#Agent">Agent</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inRangeOf" title="Inverse of rdfs:range. Defined in Ontology Documentation Profile">In Range Of</a>
-              </th>
-              <td>
-                <ul>
-                  <li>
-                    <span>
-                      <a href="http://w3id.org/semioe#includedIn">includedIn</a>
-                      <sup class="sup-op" title="OWL Object Property">op</sup>
-                    </span>
-                  </li>
-                  <li>
-                    <span>
-                      <a href="http://w3id.org/semioe#onSmartObject">onSmartObject</a>
-                      <sup class="sup-op" title="OWL Object Property">op</sup>
-                    </span>
-                  </li>
-                </ul>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="System">
-          <h3>System
-            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://w3id.org/semioe#System</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>A system inside a SmartObject</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subClassOf" title="The subject is a subclass of a class. Defined in The RDF Schema vocabulary (RDFS)">Sub Class Of</a>
-              </th>
-              <td>
-                <a href="http://www.w3.org/ns/ssn/System">ssn:System</a>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2002/07/owl#equivalentClass" title="The property that determines that two given classes are equivalent, and that is used to specify datatype definitions. Defined in The OWL 2 Schema vocabulary (OWL 2)">Equivalentclass</a>
-              </th>
-              <td>
-                <span>
-                  <span>
-                    <span>
-                      <a href="http://w3id.org/semioe#locatedIn">locatedIn</a>
-                      <sup class="sup-op" title="OWL Object Property">op</sup>
-                    </span>
-                    <span>
-                      <span class="cardinality">exactly</span>
-                      <span>1</span>
-                    </span><br>
-                  </span>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inDomainOf" title="Inverse of rdfs:domain. Defined in Ontology Documentation Profile">In Domain Of</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#includedIn">includedIn</a>
-                  <sup class="sup-op" title="OWL Object Property">op</sup>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="WorkflowElement">
-          <h3>WorkflowElement
-            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://w3id.org/semioe#WorkflowElement</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>A generic workflow element, which can be either an ioe:Activity or an ioe:Process in the organization.</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inRangeOf" title="Inverse of rdfs:range. Defined in Ontology Documentation Profile">In Range Of</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#forWorkflowElement">forWorkflowElement</a>
-                  <sup class="sup-op" title="OWL Object Property">op</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="https://w3id.org/profile/ontdoc/superClassOf" title="Inverse of RDFS' subClassOf. Defined in Ontology Documentation Profile">Super Class Of</a>
-              </th>
-              <td>
-                <ul>
-                  <li>
-                    <span>
-                      <a href="http://w3id.org/semioe#Activity">Activity</a>
-                      <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                    </span>
-                  </li>
-                  <li>
-                    <span>
-                      <a href="http://w3id.org/semioe#Process">Process</a>
-                      <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                    </span>
-                  </li>
-                </ul>
-              </td>
-            </tr>
-          </table>
-        </div>
+   </div>
+   <div class="entity" id="http://w3id.org/semioe#forWorkflowElement">
+      <h3>forWorkflowElement<sup class="type-op" title="object property">op</sup>
+         <span class="backlink"> back to <a href="#toc">ToC</a> or <a href="#objectproperties">Object Property ToC</a>
+         </span>
+      </h3>
+      <p>
+         <strong>IRI:</strong> http://w3id.org/semioe#forWorkflowElement</p>
+      <div class="comment">
+         <span class="markdown">Relates an ioe:ActorRelation with the ioe:WorkflowElement for which the relation is established.</span>
       </div>
-      <div class="section" id="objectproperties">
-        <h2>Object Properties</h2>
-        <div class="property entity" id="engagedIn">
-          <h3>engagedIn
-            <sup class="sup-op" title="OWL Object Property">op</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://w3id.org/semioe#engagedIn</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>Relates an ioe:Agent to the ioe:Activity which she/he is engaged with.</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#Agent">Agent</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#Activity">Activity</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="forRole">
-          <h3>for role
-            <sup class="sup-op" title="OWL Object Property">op</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://w3id.org/semioe#forRole</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#Right">Right</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#CurrentRole">CurrentRole</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="forWorkflowElement">
-          <h3>forWorkflowElement
-            <sup class="sup-op" title="OWL Object Property">op</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://w3id.org/semioe#forWorkflowElement</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>Relates an ioe:ActorRelation with the ioe:WorkflowElement for which the relation is established.</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#AgentRelation">AgentRelation</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#WorkflowElement">WorkflowElement</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="fromAgent">
-          <h3>fromAgent
-            <sup class="sup-op" title="OWL Object Property">op</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://w3id.org/semioe#fromAgent</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>Relates an ioe:ActorRelation to the ioe:Agent initiating the relation.</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#AgentRelation">AgentRelation</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#Agent">Agent</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="hasType">
-          <h3>hasType
-            <sup class="sup-op" title="OWL Object Property">op</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://w3id.org/semioe#hasType</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>Specifies the type of a ioe:Right</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#Right">Right</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#RightType">RightType</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="inProcess">
-          <h3>inProcess
-            <sup class="sup-op" title="OWL Object Property">op</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://w3id.org/semioe#inProcess</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>Relates an ioe:Activity to the ioe:Process to which it belongs</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#Activity">Activity</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#Process">Process</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="includedIn">
-          <h3>includedIn
-            <sup class="sup-op" title="OWL Object Property">op</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://w3id.org/semioe#includedIn</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>Relates an ioe:System to the ioe:SmartObject which includes it</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#System">System</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#SmartObject">SmartObject</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="locatedIn">
-          <h3>locatedIn
-            <sup class="sup-op" title="OWL Object Property">op</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://w3id.org/semioe#locatedIn</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>Relates an ioe:Agent to the ioe:Site in which she/he is located.</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#Agent">Agent</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#Site">Site</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="onEnvironment">
-          <h3>onEnvironment
-            <sup class="sup-op" title="OWL Object Property">op</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://w3id.org/semioe#onEnvironment</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>Specifies the ioe:Site on which the ioe:RightOnEnvironment applies.</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#RightOnEnvironment">RightOnEnvironment</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#Site">Site</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="onSmartObject">
-          <h3>onSmartObject
-            <sup class="sup-op" title="OWL Object Property">op</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://w3id.org/semioe#onSmartObject</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>Specifies the ioe:SmartObject on which the ioe:RightOnSmartObject applies.</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#RightOnSmartObject">RightOnSmartObject</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#SmartObject">SmartObject</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="onSystem">
-          <h3>onSystem
-            <sup class="sup-op" title="OWL Object Property">op</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://w3id.org/semioe#onSystem</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>Specifies the ssn:System on which the ioe:RightOnSystem applies.</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#RightOnSystem">RightOnSystem</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
-              </th>
-              <td>
-                <a href="http://www.w3.org/ns/ssn/System">ssn:System</a>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="toAgent">
-          <h3>toAgent
-            <sup class="sup-op" title="OWL Object Property">op</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://w3id.org/semioe#toAgent</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>Relates an ioe:ActorRelation to the ioe:Agent that is the object of the relation.</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#AgentRelation">AgentRelation</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#Agent">Agent</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
+      <div class="description">
+         <dl>
+            <dt>has domain</dt>
+            <dd>
+               <a href="#http://w3id.org/semioe#AgentRelation" title="http://w3id.org/semioe#AgentRelation">AgentRelation</a>
+               <sup class="type-c" title="class">c</sup>
+            </dd>
+            <dt>has range</dt>
+            <dd>
+               <a href="#http://w3id.org/semioe#WorkflowElement" title="http://w3id.org/semioe#WorkflowElement">WorkflowElement</a>
+               <sup class="type-c" title="class">c</sup>
+            </dd>
+         </dl>
       </div>
-      <div class="section" id="datatypeproperties">
-        <h2>Datatype Properties</h2>
-        <div class="property entity" id="endTime">
-          <h3>endTime
-            <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://w3id.org/semioe#endTime</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>The dateTime representing the end of the relation</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#CurrentRole">CurrentRole</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
-              </th>
-              <td>
-                <a href="http://www.w3.org/2001/XMLSchema#dateTime">xsd:dateTime</a>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="isTransferable">
-          <h3>isTransfrrable
-            <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://w3id.org/semioe#isTransferable</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>Specifies whether an ioe:CurrentRole can be transfered from an ioe:Agent to another</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#CurrentRole">CurrentRole</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
-              </th>
-              <td>
-                <a href="http://www.w3.org/2001/XMLSchema#boolean">xsd:boolean</a>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="startTime">
-          <h3>startTime
-            <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://w3id.org/semioe#startTime</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>The dateTime representing the start of the relation</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#CurrentRole">CurrentRole</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
-              </th>
-              <td>
-                <a href="http://www.w3.org/2001/XMLSchema#dateTime">xsd:dateTime</a>
-              </td>
-            </tr>
-          </table>
-        </div>
+   </div>
+   <div class="entity" id="http://w3id.org/semioe#fromAgent">
+      <h3>fromAgent<sup class="type-op" title="object property">op</sup>
+         <span class="backlink"> back to <a href="#toc">ToC</a> or <a href="#objectproperties">Object Property ToC</a>
+         </span>
+      </h3>
+      <p>
+         <strong>IRI:</strong> http://w3id.org/semioe#fromAgent</p>
+      <div class="comment">
+         <span class="markdown">Relates an ioe:ActorRelation to the ioe:Agent initiating the relation.</span>
       </div>
-      <div class="section" id="annotationproperties">
-        <h2>Annotation Properties</h2>
-        <div class="property entity" id="created">
-          <h3>created
-            <sup class="sup-ap" title="OWL Annotation Property">ap</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://purl.org/dc/elements/1.1/created</code>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="title">
-          <h3>title
-            <sup class="sup-ap" title="OWL Annotation Property">ap</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://purl.org/dc/elements/1.1/title</code>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="creator">
-          <h3>creator
-            <sup class="sup-ap" title="OWL Annotation Property">ap</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://purl.org/dc/terms/creator</code>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="preferredNamespacePrefix">
-          <h3>preferred namespace prefix
-            <sup class="sup-ap" title="OWL Annotation Property">ap</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://purl.org/vocab/vann/preferredNamespacePrefix</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subPropertyOf" title="The subject is a subproperty of a property. Defined in The RDF Schema vocabulary (RDFS)">Sub Property Of</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://purl.org/vocab/vann/preferredNamespacePrefix">vann:preferredNamespacePrefix</a>
-                  <sup class="sup-ap" title="OWL Annotation Property">ap</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="https://w3id.org/profile/ontdoc/superPropertyOf" title="Inverse of RDFS' subPropertyOf. Defined in Ontology Documentation Profile">Super Property Of</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://purl.org/vocab/vann/preferredNamespacePrefix">vann:preferredNamespacePrefix</a>
-                  <sup class="sup-ap" title="OWL Annotation Property">ap</sup>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="preferredNamespaceUri">
-          <h3>preferred namespace uri
-            <sup class="sup-ap" title="OWL Annotation Property">ap</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://purl.org/vocab/vann/preferredNamespaceUri</code>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="maker">
-          <h3>maker
-            <sup class="sup-ap" title="OWL Annotation Property">ap</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://xmlns.com/foaf/0.1/maker</code>
-              </td>
-            </tr>
-          </table>
-        </div>
+      <div class="description">
+         <dl>
+            <dt>has domain</dt>
+            <dd>
+               <a href="#http://w3id.org/semioe#AgentRelation" title="http://w3id.org/semioe#AgentRelation">AgentRelation</a>
+               <sup class="type-c" title="class">c</sup>
+            </dd>
+            <dt>has range</dt>
+            <dd>
+               <a href="#http://w3id.org/semioe#Agent" title="http://w3id.org/semioe#Agent">Agent</a>
+               <sup class="type-c" title="class">c</sup>
+            </dd>
+         </dl>
       </div>
-      <div class="section" id="functionalproperties">
-        <h2>Functional Properties</h2>
-        <div class="property entity" id="includedIn">
-          <h3>includedIn
-            <sup class="sup-fp" title="OWL Functional Property">fp</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://w3id.org/semioe#includedIn</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>Relates an ioe:System to the ioe:SmartObject which includes it</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#System">System</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#SmartObject">SmartObject</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="locatedIn">
-          <h3>locatedIn
-            <sup class="sup-fp" title="OWL Functional Property">fp</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://w3id.org/semioe#locatedIn</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>Relates an ioe:Agent to the ioe:Site in which she/he is located.</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#Agent">Agent</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
-              </th>
-              <td>
-                <span>
-                  <a href="http://w3id.org/semioe#Site">Site</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
+   </div>
+   <div class="entity" id="http://w3id.org/semioe#hasType">
+      <h3>hasType<sup class="type-op" title="object property">op</sup>
+         <span class="backlink"> back to <a href="#toc">ToC</a> or <a href="#objectproperties">Object Property ToC</a>
+         </span>
+      </h3>
+      <p>
+         <strong>IRI:</strong> http://w3id.org/semioe#hasType</p>
+      <div class="comment">
+         <span class="markdown">Specifies the type of a ioe:Right</span>
       </div>
-      <div id="namespaces">
-        <h2>Namespaces</h2>
-        <dl>
-          <dt id="bot">bot</dt>
-          <dd>
-            <code>https://w3id.org/bot#</code>
-          </dd>
-          <dt id="dc">dc</dt>
-          <dd>
-            <code>http://purl.org/dc/elements/1.1/</code>
-          </dd>
-          <dt id="dcterms">dcterms</dt>
-          <dd>
-            <code>http://purl.org/dc/terms/</code>
-          </dd>
-          <dt id="foaf">foaf</dt>
-          <dd>
-            <code>http://xmlns.com/foaf/0.1/</code>
-          </dd>
-          <dt id="ioe">ioe</dt>
-          <dd>
-            <code>http://w3id.org/semioe#</code>
-          </dd>
-          <dt id="org">org</dt>
-          <dd>
-            <code>http://www.w3.org/ns/org#</code>
-          </dd>
-          <dt id="owl">owl</dt>
-          <dd>
-            <code>http://www.w3.org/2002/07/owl#</code>
-          </dd>
-          <dt id="prov">prov</dt>
-          <dd>
-            <code>http://www.w3.org/ns/prov#</code>
-          </dd>
-          <dt id="rdf">rdf</dt>
-          <dd>
-            <code>http://www.w3.org/1999/02/22-rdf-syntax-ns#</code>
-          </dd>
-          <dt id="rdfs">rdfs</dt>
-          <dd>
-            <code>http://www.w3.org/2000/01/rdf-schema#</code>
-          </dd>
-          <dt id="schema">schema</dt>
-          <dd>
-            <code>https://schema.org/</code>
-          </dd>
-          <dt id="ssn">ssn</dt>
-          <dd>
-            <code>http://www.w3.org/ns/ssn/</code>
-          </dd>
-          <dt id="vann">vann</dt>
-          <dd>
-            <code>http://purl.org/vocab/vann/</code>
-          </dd>
-          <dt id="xsd">xsd</dt>
-          <dd>
-            <code>http://www.w3.org/2001/XMLSchema#</code>
-          </dd>
-        </dl>
+      <div class="description">
+         <dl>
+            <dt>has domain</dt>
+            <dd>
+               <a href="#http://w3id.org/semioe#Right" title="http://w3id.org/semioe#Right">Right</a>
+               <sup class="type-c" title="class">c</sup>
+            </dd>
+            <dt>has range</dt>
+            <dd>
+               <a href="#http://w3id.org/semioe#RightType" title="http://w3id.org/semioe#RightType">RightType</a>
+               <sup class="type-c" title="class">c</sup>
+            </dd>
+         </dl>
       </div>
-      <div id="legend">
-        <h2>Legend</h2>
-        <table class="entity">
-          <tr>
-            <td>
-              <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-            </td>
-            <td>Classes</td>
-          </tr>
-          <tr>
-            <td>
-              <sup class="sup-op" title="OWL Object Property">op</sup>
-            </td>
-            <td>Object Properties</td>
-          </tr>
-          <tr>
-            <td>
-              <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
-            </td>
-            <td>Datatype Properties</td>
-          </tr>
-          <tr>
-            <td>
-              <sup class="sup-ap" title="OWL Annotation Property">ap</sup>
-            </td>
-            <td>Annotation Properties</td>
-          </tr>
-          <tr>
-            <td>
-              <sup class="sup-fp" title="OWL Functional Property">fp</sup>
-            </td>
-            <td>Functional Properties</td>
-          </tr>
-        </table>
+   </div>
+   <div class="entity" id="http://w3id.org/semioe#includedIn">
+      <h3>includedIn<sup class="type-op" title="object property">op</sup>
+         <span class="backlink"> back to <a href="#toc">ToC</a> or <a href="#objectproperties">Object Property ToC</a>
+         </span>
+      </h3>
+      <p>
+         <strong>IRI:</strong> http://w3id.org/semioe#includedIn</p>
+      <div class="comment">
+         <span class="markdown">Relates an ioe:System to the ioe:SmartObject which includes it</span>
       </div>
-    </div>
-    <div id="pylode">
-      <p>made by 
-        <a href="https://github.com/rdflib/pyLODE">
-          <span id="p">p</span>
-          <span id="y">y</span>
-          <span>LODE</span>
-        </a>
-        <a href="https://github.com/rdflib/pyLODE/release/3.0.6a" id="version">3.0.6a</a>
-        <span> with the </span>
-        <a href="https://w3id.org/profile/ontpub" id="profile">OntPub</a>
-        <span>profile</span>
-      </p>
-    </div>
-    <div id="toc">
-      <h3>Table of Contents</h3>
-      <ul class="first">
-        <li>
-          <h4>
-            <a href="#metadata">Metadata</a>
-          </h4>
-        </li>
-        <li>
-          <h4>
-            <a href="#classes">Classes</a>
-          </h4>
-          <ul class="second">
-            <li>
-              <a href="#Activity">Activity</a>
-            </li>
-            <li>
-              <a href="#Agent">Agent</a>
-            </li>
-            <li>
-              <a href="#AgentRelation">AgentRelation</a>
-            </li>
-            <li>
-              <a href="#Collaboration">Collaboration</a>
-            </li>
-            <li>
-              <a href="#CurrentRole">CurrentRole</a>
-            </li>
-            <li>
-              <a href="#Delegation">Delegation</a>
-            </li>
-            <li>
-              <a href="#HAgent">HAgent</a>
-            </li>
-            <li>
-              <a href="#Process">Process</a>
-            </li>
-            <li>
-              <a href="#Right">Right</a>
-            </li>
-            <li>
-              <a href="#RightOnEnvironment">RightOnEnvironment</a>
-            </li>
-            <li>
-              <a href="#RightOnSmartObject">RightOnSmartObject</a>
-            </li>
-            <li>
-              <a href="#RightOnSystem">RightOnSystem</a>
-            </li>
-            <li>
-              <a href="#RightType">RightType</a>
-            </li>
-            <li>
-              <a href="#Site">Site</a>
-            </li>
-            <li>
-              <a href="#SmartObject">SmartObject</a>
-            </li>
-            <li>
-              <a href="#System">System</a>
-            </li>
-            <li>
-              <a href="#WorkflowElement">WorkflowElement</a>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <h4>
-            <a href="#objectproperties">Object Properties</a>
-          </h4>
-          <ul class="second">
-            <li>
-              <a href="#engagedIn">engagedIn</a>
-            </li>
-            <li>
-              <a href="#forRole">for role</a>
-            </li>
-            <li>
-              <a href="#forWorkflowElement">forWorkflowElement</a>
-            </li>
-            <li>
-              <a href="#fromAgent">fromAgent</a>
-            </li>
-            <li>
-              <a href="#hasType">hasType</a>
-            </li>
-            <li>
-              <a href="#inProcess">inProcess</a>
-            </li>
-            <li>
-              <a href="#includedIn">includedIn</a>
-            </li>
-            <li>
-              <a href="#locatedIn">locatedIn</a>
-            </li>
-            <li>
-              <a href="#onEnvironment">onEnvironment</a>
-            </li>
-            <li>
-              <a href="#onSmartObject">onSmartObject</a>
-            </li>
-            <li>
-              <a href="#onSystem">onSystem</a>
-            </li>
-            <li>
-              <a href="#toAgent">toAgent</a>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <h4>
-            <a href="#datatypeproperties">Datatype Properties</a>
-          </h4>
-          <ul class="second">
-            <li>
-              <a href="#endTime">endTime</a>
-            </li>
-            <li>
-              <a href="#isTransferable">isTransferable</a>
-            </li>
-            <li>
-              <a href="#startTime">startTime</a>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <h4>
-            <a href="#annotationproperties">Annotation Properties</a>
-          </h4>
-          <ul class="second">
-            <li>
-              <a href="#created">created</a>
-            </li>
-            <li>
-              <a href="#title">title</a>
-            </li>
-            <li>
-              <a href="#creator">creator</a>
-            </li>
-            <li>
-              <a href="#preferredNamespacePrefix">preferred namespace prefix</a>
-            </li>
-            <li>
-              <a href="#preferredNamespaceUri">preferred namespace uri</a>
-            </li>
-            <li>
-              <a href="#maker">maker</a>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <h4>
-            <a href="#functionalproperties">Functional Properties</a>
-          </h4>
-          <ul class="second">
-            <li>
-              <a href="#includedIn">includedIn</a>
-            </li>
-            <li>
-              <a href="#locatedIn">locatedIn</a>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <h4>
-            <a href="#namespaces">Namespaces</a>
-          </h4>
-          <ul class="second">
-            <li>
-              <a href="#bot">bot</a>
-            </li>
-            <li>
-              <a href="#dc">dc</a>
-            </li>
-            <li>
-              <a href="#dcterms">dcterms</a>
-            </li>
-            <li>
-              <a href="#foaf">foaf</a>
-            </li>
-            <li>
-              <a href="#ioe">ioe</a>
-            </li>
-            <li>
-              <a href="#org">org</a>
-            </li>
-            <li>
-              <a href="#owl">owl</a>
-            </li>
-            <li>
-              <a href="#prov">prov</a>
-            </li>
-            <li>
-              <a href="#rdf">rdf</a>
-            </li>
-            <li>
-              <a href="#rdfs">rdfs</a>
-            </li>
-            <li>
-              <a href="#schema">schema</a>
-            </li>
-            <li>
-              <a href="#ssn">ssn</a>
-            </li>
-            <li>
-              <a href="#vann">vann</a>
-            </li>
-            <li>
-              <a href="#xsd">xsd</a>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <h4>
-            <a href="#legend">Legend</a>
-          </h4>
-          <ul class="second"></ul>
-        </li>
-      </ul>
-    </div>
-  </body>
+      <div class="description">
+         <p>
+            <strong>has characteristics:
+                </strong> functional</p>
+         <dl>
+            <dt>has domain</dt>
+            <dd>
+               <a href="#http://w3id.org/semioe#System" title="http://w3id.org/semioe#System">System</a>
+               <sup class="type-c" title="class">c</sup>
+            </dd>
+            <dt>has range</dt>
+            <dd>
+               <a href="#http://w3id.org/semioe#SmartObject" title="http://w3id.org/semioe#SmartObject">SmartObject</a>
+               <sup class="type-c" title="class">c</sup>
+            </dd>
+         </dl>
+      </div>
+   </div>
+   <div class="entity" id="http://w3id.org/semioe#inProcess">
+      <h3>inProcess<sup class="type-op" title="object property">op</sup>
+         <span class="backlink"> back to <a href="#toc">ToC</a> or <a href="#objectproperties">Object Property ToC</a>
+         </span>
+      </h3>
+      <p>
+         <strong>IRI:</strong> http://w3id.org/semioe#inProcess</p>
+      <div class="comment">
+         <span class="markdown">Relates an ioe:Activity to the ioe:Process to which it belongs</span>
+      </div>
+      <div class="description">
+         <dl>
+            <dt>has domain</dt>
+            <dd>
+               <a href="#http://w3id.org/semioe#Activity" title="http://w3id.org/semioe#Activity">Activity</a>
+               <sup class="type-c" title="class">c</sup>
+            </dd>
+            <dt>has range</dt>
+            <dd>
+               <a href="#http://w3id.org/semioe#Process" title="http://w3id.org/semioe#Process">Process</a>
+               <sup class="type-c" title="class">c</sup>
+            </dd>
+         </dl>
+      </div>
+   </div>
+   <div class="entity" id="http://w3id.org/semioe#locatedIn">
+      <h3>locatedIn<sup class="type-op" title="object property">op</sup>
+         <span class="backlink"> back to <a href="#toc">ToC</a> or <a href="#objectproperties">Object Property ToC</a>
+         </span>
+      </h3>
+      <p>
+         <strong>IRI:</strong> http://w3id.org/semioe#locatedIn</p>
+      <div class="comment">
+         <span class="markdown">Relates an ioe:Agent to the ioe:Site in which she/he is located.</span>
+      </div>
+      <div class="description">
+         <p>
+            <strong>has characteristics:
+                </strong> functional</p>
+         <dl>
+            <dt>has domain</dt>
+            <dd>
+               <a href="#http://w3id.org/semioe#Agent" title="http://w3id.org/semioe#Agent">Agent</a>
+               <sup class="type-c" title="class">c</sup>
+            </dd>
+            <dt>has range</dt>
+            <dd>
+               <a href="#http://w3id.org/semioe#Site" title="http://w3id.org/semioe#Site">Site</a>
+               <sup class="type-c" title="class">c</sup>
+            </dd>
+         </dl>
+      </div>
+   </div>
+   <div class="entity" id="http://w3id.org/semioe#onEnvironment">
+      <h3>onEnvironment<sup class="type-op" title="object property">op</sup>
+         <span class="backlink"> back to <a href="#toc">ToC</a> or <a href="#objectproperties">Object Property ToC</a>
+         </span>
+      </h3>
+      <p>
+         <strong>IRI:</strong> http://w3id.org/semioe#onEnvironment</p>
+      <div class="comment">
+         <span class="markdown">Specifies the ioe:Site on which the ioe:RightOnEnvironment applies.</span>
+      </div>
+      <div class="description">
+         <dl>
+            <dt>has domain</dt>
+            <dd>
+               <a href="#http://w3id.org/semioe#RightOnEnvironment" title="http://w3id.org/semioe#RightOnEnvironment">RightOnEnvironment</a>
+               <sup class="type-c" title="class">c</sup>
+            </dd>
+            <dt>has range</dt>
+            <dd>
+               <a href="#http://w3id.org/semioe#Site" title="http://w3id.org/semioe#Site">Site</a>
+               <sup class="type-c" title="class">c</sup>
+            </dd>
+         </dl>
+      </div>
+   </div>
+   <div class="entity" id="http://w3id.org/semioe#onSmartObject">
+      <h3>onSmartObject<sup class="type-op" title="object property">op</sup>
+         <span class="backlink"> back to <a href="#toc">ToC</a> or <a href="#objectproperties">Object Property ToC</a>
+         </span>
+      </h3>
+      <p>
+         <strong>IRI:</strong> http://w3id.org/semioe#onSmartObject</p>
+      <div class="comment">
+         <span class="markdown">Specifies the ioe:SmartObject on which the ioe:RightOnSmartObject applies.</span>
+      </div>
+      <div class="description">
+         <dl>
+            <dt>has domain</dt>
+            <dd>
+               <a href="#http://w3id.org/semioe#RightOnSmartObject" title="http://w3id.org/semioe#RightOnSmartObject">RightOnSmartObject</a>
+               <sup class="type-c" title="class">c</sup>
+            </dd>
+            <dt>has range</dt>
+            <dd>
+               <a href="#http://w3id.org/semioe#SmartObject" title="http://w3id.org/semioe#SmartObject">SmartObject</a>
+               <sup class="type-c" title="class">c</sup>
+            </dd>
+         </dl>
+      </div>
+   </div>
+   <div class="entity" id="http://w3id.org/semioe#onSystem">
+      <h3>onSystem<sup class="type-op" title="object property">op</sup>
+         <span class="backlink"> back to <a href="#toc">ToC</a> or <a href="#objectproperties">Object Property ToC</a>
+         </span>
+      </h3>
+      <p>
+         <strong>IRI:</strong> http://w3id.org/semioe#onSystem</p>
+      <div class="comment">
+         <span class="markdown">Specifies the ssn:System on which the ioe:RightOnSystem applies.</span>
+      </div>
+      <div class="description">
+         <dl>
+            <dt>has domain</dt>
+            <dd>
+               <a href="#http://w3id.org/semioe#RightOnSystem" title="http://w3id.org/semioe#RightOnSystem">RightOnSystem</a>
+               <sup class="type-c" title="class">c</sup>
+            </dd>
+            <dt>has range</dt>
+            <dd>
+               <a href="http://www.w3.org/ns/ssn/System"
+                  target="_blank"
+                  title="http://www.w3.org/ns/ssn/System">system</a>
+               <sup class="type-c" title="class">c</sup>
+            </dd>
+         </dl>
+      </div>
+   </div>
+   <div class="entity" id="http://w3id.org/semioe#toAgent">
+      <h3>toAgent<sup class="type-op" title="object property">op</sup>
+         <span class="backlink"> back to <a href="#toc">ToC</a> or <a href="#objectproperties">Object Property ToC</a>
+         </span>
+      </h3>
+      <p>
+         <strong>IRI:</strong> http://w3id.org/semioe#toAgent</p>
+      <div class="comment">
+         <span class="markdown">Relates an ioe:ActorRelation to the ioe:Agent that is the object of the relation.</span>
+      </div>
+      <div class="description">
+         <dl>
+            <dt>has domain</dt>
+            <dd>
+               <a href="#http://w3id.org/semioe#AgentRelation" title="http://w3id.org/semioe#AgentRelation">AgentRelation</a>
+               <sup class="type-c" title="class">c</sup>
+            </dd>
+            <dt>has range</dt>
+            <dd>
+               <a href="#http://w3id.org/semioe#Agent" title="http://w3id.org/semioe#Agent">Agent</a>
+               <sup class="type-c" title="class">c</sup>
+            </dd>
+         </dl>
+      </div>
+   </div>
+</div><div xmlns:widoco="https://w3id.org/widoco/vocab#"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     id="dataproperties">
+   <h3 id="dataproperties-headline" class="list">Data Properties</h3>
+   <ul class="hlist">
+      <li>
+         <a href="#http://w3id.org/semioe#endTime" title="http://w3id.org/semioe#endTime">endTime</a>
+      </li>
+      <li>
+         <a href="#http://w3id.org/semioe#isTransferrable" title="http://w3id.org/semioe#isTransferrable">isTransferable</a>
+      </li>
+      <li>
+         <a href="#http://w3id.org/semioe#startTime" title="http://w3id.org/semioe#startTime">startTime</a>
+      </li>
+   </ul>
+   <div class="entity" id="http://w3id.org/semioe#endTime">
+      <h3>endTime<sup class="type-dp" title="data property">dp</sup>
+         <span class="backlink"> back to <a href="#toc">ToC</a> or <a href="#dataproperties">Data Property ToC</a>
+         </span>
+      </h3>
+      <p>
+         <strong>IRI:</strong> http://w3id.org/semioe#endTime</p>
+      <div class="comment">
+         <span class="markdown">The dateTime representing the end of the relation</span>
+      </div>
+      <div class="description">
+         <dl>
+            <dt>has domain</dt>
+            <dd>
+               <a href="#http://w3id.org/semioe#CurrentRole" title="http://w3id.org/semioe#CurrentRole">CurrentRole</a>
+               <sup class="type-c" title="class">c</sup>
+            </dd>
+            <dt>has range</dt>
+            <dd>
+               <a href="http://www.w3.org/2001/XMLSchema#dateTime"
+                  target="_blank"
+                  title="http://www.w3.org/2001/XMLSchema#dateTime">date time</a>
+            </dd>
+         </dl>
+      </div>
+   </div>
+   <div class="entity" id="http://w3id.org/semioe#isTransferrable">
+      <h3>isTransferable<sup class="type-dp" title="data property">dp</sup>
+         <span class="backlink"> back to <a href="#toc">ToC</a> or <a href="#dataproperties">Data Property ToC</a>
+         </span>
+      </h3>
+      <p>
+         <strong>IRI:</strong> http://w3id.org/semioe#isTransferrable</p>
+      <div class="comment">
+         <span class="markdown">Specifies whether an ioe:CurrentRole can be transfered from an ioe:Agent to another</span>
+      </div>
+      <div class="description">
+         <dl>
+            <dt>has domain</dt>
+            <dd>
+               <a href="#http://w3id.org/semioe#CurrentRole" title="http://w3id.org/semioe#CurrentRole">CurrentRole</a>
+               <sup class="type-c" title="class">c</sup>
+            </dd>
+            <dt>has range</dt>
+            <dd>
+               <a href="http://www.w3.org/2001/XMLSchema#boolean"
+                  target="_blank"
+                  title="http://www.w3.org/2001/XMLSchema#boolean">boolean</a>
+            </dd>
+         </dl>
+      </div>
+   </div>
+   <div class="entity" id="http://w3id.org/semioe#startTime">
+      <h3>startTime<sup class="type-dp" title="data property">dp</sup>
+         <span class="backlink"> back to <a href="#toc">ToC</a> or <a href="#dataproperties">Data Property ToC</a>
+         </span>
+      </h3>
+      <p>
+         <strong>IRI:</strong> http://w3id.org/semioe#startTime</p>
+      <div class="comment">
+         <span class="markdown">The dateTime representing the start of the relation</span>
+      </div>
+      <div class="description">
+         <dl>
+            <dt>has domain</dt>
+            <dd>
+               <a href="#http://w3id.org/semioe#CurrentRole" title="http://w3id.org/semioe#CurrentRole">CurrentRole</a>
+               <sup class="type-c" title="class">c</sup>
+            </dd>
+            <dt>has range</dt>
+            <dd>
+               <a href="http://www.w3.org/2001/XMLSchema#dateTime"
+                  target="_blank"
+                  title="http://www.w3.org/2001/XMLSchema#dateTime">date time</a>
+            </dd>
+         </dl>
+      </div>
+   </div>
+</div><div id="legend">
+<h2>Legend <span class="backlink"> back to <a href="#toc">ToC</a></span></h2>
+<div   class="entity">
+<sup class="type-c" title="Classes">c</sup>: Classes <br/>
+<sup class="type-op" title="Object Properties">op</sup>: Object Properties <br/>
+<sup class="type-dp" title="Data Properties">dp</sup>: Data Properties <br/>
+</div>
+</div>
+</div>
+
+<!--REFERENCES SECTION-->
+  <div id="references">
+<h2 id="ref" class="list">References <span class="backlink"> back to <a href="#toc">ToC</a></span></h2>
+<ul>
+<li id="bib-SSN"><strong>[SSN]</strong>: Compton, M., Barnaghi, P., Bermudez, L., Garcia-Castro, R., Corcho, O., Cox, S., ... & Taylor, K. (2012). The SSN ontology of the W3C semantic sensor network incubator group. Journal of Web Semantics, 17, 25-32. URL: <a href="https://www.w3.org/TR/vocab-ssn/">https://www.w3.org/TR/vocab-ssn/</a></li>
+<li id="bib-SOSA"><strong>[SOSA]</strong>: Janowicz, K., Haller, A., Cox, S. J., Le Phuoc, D., & Lefrançois, M. (2019). SOSA: A lightweight ontology for sensors, observations, samples, and actuators. Journal of Web Semantics, 56, 1-10. URL: <a href="https://www.w3.org/TR/vocab-ssn/">https://www.w3.org/TR/vocab-ssn/</a></li>
+<li id="bib-BOT"><strong>[BOT]</strong>: Rasmussen, M. H., Lefrançois, M., Schneider, G. F., & Pauwels, P. (2021). BOT: The building topology ontology of the W3C linked building data group. Semantic Web, 12(1), 143-161. URL: <a href="https://w3c-lbd-cg.github.io/bot/">https://w3c-lbd-cg.github.io/bot/</a> </li>
+<li id="bib-ORG"><strong>[ORG]</strong>: Reynolds D. (2014). The Organization Ontology. W3C Recommendation. URL: <a href="https://www.w3.org/TR/vocab-org/">https://www.w3.org/TR/vocab-org/</a> </li>
+</ul>
+
+</div>
+<div id="acknowledgments">
+<h2 id="ack" class="list">Acknowledgments <span class="backlink"> back to <a href="#toc">ToC</a></span></h2>
+<h3 id="ack" class="list">Funding</h3>
+<p>
+The development of SemIoE has been funded by the Italian Ministry of University and Research through the PRIN Project ``HOMEY: a Human-centric IOE-based framework for supporting the transition towards industry 5.0'' (code 2022NX7WKE).
+<h3 id="ack" class="list">Documentation</h3>
+<p>
+The authors would like to thank <a href="http://www.essepuntato.it/">Silvio Peroni</a> for developing <a href="http://www.essepuntato.it/lode">LODE</a>, a Live OWL Documentation Environment, which is used for representing the Cross Referencing Section of this document and <a href="https://w3id.org/people/dgarijo">Daniel Garijo</a> for developing <a href="https://github.com/dgarijo/Widoco">Widoco</a>, the program used to create the template used in this documentation.</p>
+</div>
+</div>
+</body>
 </html>

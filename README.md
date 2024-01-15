@@ -9,6 +9,9 @@ The repository contains the following folders:
 - "docs", containing the [specification](docs/index.html) of the ontology (a webpage is available [here](https://homey-prin22.github.io/semioe/index.html))
 - "rdf", containing the serialization of the ontology in [Turtle](rdf/semioe.ttl) and in [RDF/XML](rdf/semioe.xml)
 
+# How to cite
+M. Arazzi, A. Nocera, E. Storti. "The SemIoE Ontology: A Semantic Model Solution for an IoE-based Industry" (2024). Preprint: https://arxiv.org/abs/2401.06667
+
 # License
 This ontology is licensed under the Creative Commons Attribution 4.0 International License. For details, see the [LICENSE](LICENSE) file.
 

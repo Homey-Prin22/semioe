@@ -16,4 +16,5 @@ M. Arazzi, A. Nocera, E. Storti. "The SemIoE Ontology: A Semantic Model Solution
 This ontology is licensed under the Creative Commons Attribution 4.0 International License. For details, see the [LICENSE](LICENSE) file.
 
 # Funding
-The development of SemIoE has been funded by the Italian Ministry of University and Research through the PRIN Project ``[HOMEY](https://homey-prin22.unipv.it/): a Human-centric IOE-based framework for supporting the transition towards industry 5.0'' (code 2022NX7WKE).
+The development of SemIoE has been supported by the PRIN 2022 Project “HOMEY: a Human-centric IoE-based Framework for Supporting the Transition Towards Industry 5.0” (code:
+2022NX7WKE, CUP: F53D23004340006) funded by the European Union - Next Generation EU, Mission 4 Component 1.

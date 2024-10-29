@@ -10,7 +10,7 @@ The repository contains the following folders:
 - "rdf", containing the serialization of the ontology in [Turtle](rdf/semioe.ttl) and in [RDF/XML](rdf/semioe.xml)
 
 # How to cite
-M. Arazzi, A. Nocera, E. Storti. "The SemIoE Ontology: A Semantic Model Solution for an IoE-based Industry" (2024). Preprint: https://arxiv.org/abs/2401.06667
+M. Arazzi, A. Nocera, E. Storti. "The SemIoE Ontology: A Semantic Model Solution for an IoE-based Industry". IEEE Internet of Things Journal, IEEE, 2024, [doi: 10.1109/JIOT.2024.3452945](https://ieeexplore.ieee.org/document/10663360)
 
 # License
 This ontology is licensed under the Creative Commons Attribution 4.0 International License. For details, see the [LICENSE](LICENSE) file.
